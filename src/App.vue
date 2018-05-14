@@ -61,10 +61,15 @@
       ></v-text-field>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-container class="main">
-      <create-note-form></create-note-form>
-      <notes></notes>
-    </v-container>
+    <v-content>
+      <v-spacer></v-spacer>
+      <v-container>
+        <create-note-form></create-note-form>
+      </v-container>
+      <v-container fluid v-bind:class="{'notes1': drawer, 'notes2': !drawer}">
+        <notes></notes>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
@@ -113,7 +118,10 @@
     font-weight: 400;
   }
 
-  .main {
-    padding-top: 80px;
+  .notes1 {
+    margin-left: 300px;
+  }
+
+  .notes2 {
   }
 </style>
