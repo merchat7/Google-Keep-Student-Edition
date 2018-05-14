@@ -60,6 +60,9 @@ export default {
           for (let i = currentIndex; i < items.length; i++) {
             let title = items[i].getElementsByTagName("h1")[0].innerHTML;
             let content = items[i].getElementsByTagName("pre")[0].innerHTML;
+            if (title === this.$store.state.notes[i].title && content === this.$store.state.notes[i].content) {
+              continue;
+            }
             let note = {title: title,
                         content: content};
             firebase.child('notes/' + this.$store.state.keys[i]).set(note);
