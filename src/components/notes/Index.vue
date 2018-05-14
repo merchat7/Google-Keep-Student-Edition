@@ -1,16 +1,18 @@
 <style>
-
-.notes {
-    margin: 0 auto;
-}
-
+    .note{
+        background: #fff;
+        border-radius: 2px;
+        box-shadow: 0 2px 5px #ccc;
+        padding: 10px;
+        margin: 8px 0;
+        width: 240px;
+    }
 </style>
 
 <template>
 
-<div class="notes" v-el:notes>
-    <note v-for="note in notes"
-            :note="note">
+<div class="notes" ref="notes">
+    <note v-for="note in notes" :note="note">
     </note>
 </div>
 
@@ -31,6 +33,8 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$refs)
+        console.log(this.$refs.notes)
         let masonry = new Masonry(this.$refs.notes, {
             itemSelector: '.note',
             columnWidth: 240,
