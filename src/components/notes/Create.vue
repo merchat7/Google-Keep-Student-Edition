@@ -68,7 +68,7 @@ export default {
                         content: this.content
                     }, (err) => {
                         if (err) {
-                            throw err
+                            alert(err)
                         }
                         this.title = ''
                         this.content = ''
