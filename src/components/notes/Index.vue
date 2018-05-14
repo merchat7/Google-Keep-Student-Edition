@@ -10,8 +10,7 @@
 
 <div class="notes" v-el:notes>
     <note v-for="note in notes"
-            v-bind:data="note"
-            v-bind:key="notes">
+            :note="note">
     </note>
 </div>
 
@@ -31,8 +30,8 @@ export default {
             notes: []
         }
     },
-    ready() {
-        let masonry = new Masonry(this.$els.notes, {
+    mounted() {
+        let masonry = new Masonry(this.$refs.notes, {
             itemSelector: '.note',
             columnWidth: 240,
             gutter: 16,
