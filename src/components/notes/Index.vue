@@ -8,9 +8,9 @@
 
 <template>
 
-<div class="notes" v-el:notes>
-    <note v-for="note in notes"
-            :note="note">
+<div class="notes" ref="notes">
+    <note v-for="note in this.$store.state.notes"
+          :note="note">
     </note>
 </div>
 
@@ -19,33 +19,53 @@
 <script>
 
 import Firebase from 'firebase'
-import Masonry from 'masonry-layout'
+import Packery from 'packery'
+import Draggabilly from 'draggabilly'
 import Note from './Note'
+
 export default {
     components: {
         Note
     },
-    data() {
-        return {
-            notes: []
-        }
-    },
     mounted() {
-        let masonry = new Masonry(this.$refs.notes, {
+        let packery = new Packery(this.$refs.notes, {
             itemSelector: '.note',
             columnWidth: 240,
             gutter: 16,
             fitWidth: true
-        })
-        let firebase = new Firebase('https://keep-student-edition.firebaseio.com')
+        });
+        let firebase = new Firebase('https://keep-student-edition.firebaseio.com');
+        let currentIndex = 0;
         firebase.child('notes').on('child_added', (snapshot) => {
-            let note = snapshot.val()
-            this.notes.unshift(note)
+            let key = snapshot.key();
+            let note = snapshot.val();
+            this.$store.state.keys.unshift(key);
+            this.$store.state.notes.unshift(note);
             this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
-                masonry.reloadItems()
-                masonry.layout()
+              //https://codepen.io/anon/pen/NMBvLM check here for more info
+              let items = packery.getItemElements();
+              for (let i = currentIndex; i < items.length; i++) {
+                let draggie = new Draggabilly(items[i]);
+                packery.bindDraggabillyEvents(draggie);
+                currentIndex++;
+              }
+              packery.reloadItems();
+              packery.layout();
             })
-        })
+        });
+
+        packery.on( 'dragItemPositioned', () => {
+          let currentIndex = 0;
+          const items = packery.getItemElements();
+          for (let i = currentIndex; i < items.length; i++) {
+            let title = items[i].getElementsByTagName("h1")[0].innerHTML;
+            let content = items[i].getElementsByTagName("pre")[0].innerHTML;
+            let note = {title: title,
+                        content: content};
+            firebase.child('notes/' + this.$store.state.keys[i]).set(note);
+            currentIndex++;
+          }
+        });
     }
 }
 

@@ -66,7 +66,7 @@
       <v-container>
         <create-note-form></create-note-form>
       </v-container>
-      <v-container fluid v-bind:class="{'notes1': drawer, 'notes2': !drawer}">
+      <v-container fluid>
         <notes></notes>
       </v-container>
     </v-content>
@@ -118,10 +118,4 @@
     font-weight: 400;
   }
 
-  .notes1 {
-    margin-left: 300px;
-  }
-
-  .notes2 {
-  }
 </style>
