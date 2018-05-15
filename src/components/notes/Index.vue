@@ -37,9 +37,9 @@ export default {
         let firebase = new Firebase('https://keep-student-edition.firebaseio.com');
         let currentIndex = 0;
         firebase.child('notes').on('child_added', (snapshot) => {
-            let key = snapshot.key();
-            let note = snapshot.val();
-            this.$store.state.keys.unshift(key);
+            let note = {title: snapshot.val().title,
+                        content: snapshot.val().content,
+                        key: snapshot.key()};
             this.$store.state.notes.unshift(note);
             this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
               //https://codepen.io/anon/pen/NMBvLM check here for more info
@@ -60,12 +60,15 @@ export default {
           for (let i = currentIndex; i < items.length; i++) {
             let title = items[i].getElementsByTagName("h1")[0].innerHTML;
             let content = items[i].getElementsByTagName("pre")[0].innerHTML;
+            let key = this.$store.state.notes[i].key;
             if (title === this.$store.state.notes[i].title && content === this.$store.state.notes[i].content) {
               continue;
             }
-            let note = {title: title,
-                        content: content};
-            firebase.child('notes/' + this.$store.state.keys[i]).set(note);
+            note = {title: title,
+                    content: content,
+                    key: key};
+            this.$store.state.notes[i] = note;
+            firebase.child('notes/' + key).set({title:title, content:content});
             currentIndex++;
           }
         });
