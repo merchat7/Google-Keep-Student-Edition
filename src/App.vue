@@ -108,25 +108,6 @@
 </script>
 
 <style>
-<<<<<<< HEAD
-    #keep main .container {
-        height: 660px;
-    }
-    .navigation-drawer__border {
-        display: none;
-    }
-    .text {
-        font-weight: 400;
-    }
-    .main {
-        padding-top: 80px;
-    }
-    *{
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-=======
   #keep main .container {
     height: 660px;
   }
@@ -136,6 +117,4 @@
   .text {
     font-weight: 400;
   }
-
->>>>>>> hart
 </style>
