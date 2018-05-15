@@ -28,6 +28,7 @@ export default {
         Note
     },
     mounted() {
+        this.$store.state.notes = [];
         let packery = new Packery(this.$refs.notes, {
             itemSelector: '.note',
             columnWidth: 240,
@@ -64,9 +65,9 @@ export default {
             if (title === this.$store.state.notes[i].title && content === this.$store.state.notes[i].content) {
               continue;
             }
-            note = {title: title,
-                    content: content,
-                    key: key};
+            let note = {title: title,
+                        content: content,
+                        key: key};
             this.$store.state.notes[i] = note;
             firebase.child('notes/' + key).set({title:title, content:content});
             currentIndex++;
