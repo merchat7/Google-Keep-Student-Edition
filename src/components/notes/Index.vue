@@ -49,6 +49,7 @@
                 gutter: 16,
                 fitWidth: true
             });
+            db.ref('notes').orderByChild("orderKey").off();
             db.ref('notes').orderByChild("orderKey").on('child_added', (snapshot) => {
                 let note = {title: snapshot.val().title,
                     content: snapshot.val().content,
