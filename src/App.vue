@@ -61,10 +61,15 @@
       ></v-text-field>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-container class="main">
-      <create-note-form></create-note-form>
-      <notes></notes>
-    </v-container>
+    <v-content>
+      <v-spacer></v-spacer>
+      <v-container>
+        <create-note-form></create-note-form>
+      </v-container>
+      <v-container fluid>
+        <notes></notes>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
@@ -103,6 +108,7 @@
 </script>
 
 <style>
+<<<<<<< HEAD
     #keep main .container {
         height: 660px;
     }
@@ -120,4 +126,16 @@
         margin: 0;
         box-sizing: border-box;
     }
+=======
+  #keep main .container {
+    height: 660px;
+  }
+  .navigation-drawer__border {
+    display: none;
+  }
+  .text {
+    font-weight: 400;
+  }
+
+>>>>>>> hart
 </style>
