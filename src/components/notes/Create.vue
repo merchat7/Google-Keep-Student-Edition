@@ -51,8 +51,7 @@ form.create-note button {
 
 <script>
 
-import Firebase from 'firebase'
-let firebase = new Firebase('https://keep-student-edition.firebaseio.com')
+import { db } from '../../firebase'
 export default {
     data() {
             return {
@@ -63,7 +62,7 @@ export default {
         methods: {
             createNote() {
                 if (this.title.trim() || this.content.trim()) {
-                    firebase.child('notes').push({
+                    db.ref('notes').push({
                         title: this.title,
                         content: this.content
                     }, (err) => {

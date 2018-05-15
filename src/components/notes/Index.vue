@@ -18,10 +18,10 @@
 
 <script>
 
-import Firebase from 'firebase'
 import Packery from 'packery'
 import Draggabilly from 'draggabilly'
 import Note from './Note'
+import { db } from '../../firebase'
 
 export default {
     components: {
@@ -35,12 +35,11 @@ export default {
             gutter: 16,
             fitWidth: true
         });
-        let firebase = new Firebase('https://keep-student-edition.firebaseio.com');
         let currentIndex = 0;
-        firebase.child('notes').on('child_added', (snapshot) => {
+         db.ref('notes').on('child_added', (snapshot) => {
             let note = {title: snapshot.val().title,
                         content: snapshot.val().content,
-                        key: snapshot.key()};
+                        key: snapshot.key};
             this.$store.state.notes.unshift(note);
             this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
               //https://codepen.io/anon/pen/NMBvLM check here for more info
@@ -69,7 +68,7 @@ export default {
                         content: content,
                         key: key};
             this.$store.state.notes[i] = note;
-            firebase.child('notes/' + key).set({title:title, content:content});
+            db.ref('notes/').child(key).set({title:title, content:content});
             currentIndex++;
           }
         });
