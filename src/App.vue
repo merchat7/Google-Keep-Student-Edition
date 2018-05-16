@@ -14,6 +14,9 @@ export default {
   html {
     background: #ededed;
   }
+  #keep main .container {
+    height: 660px;
+  }
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -21,4 +24,8 @@ export default {
     text-align: center;
     color: #2c3e50;
   }
+  .text {
+    font-weight: 400;
+  }
+
 </style>
