@@ -1,21 +1,21 @@
 <style>
 
-.note {
+.subject {
     background: #fff;
     border-radius: 2px;
     box-shadow: 0 2px 5px #ccc;
     padding: 10px;
     margin: 8px 0;
-    width: 240px;
+    width: 100%;
 }
 
-.note h1 {
+.subject h1 {
     font-size: 1.1em;
     margin-bottom: 6px;
     word-wrap: break-word;
 }
 
-.note pre {
+.subject pre {
     font-size: 1.1em;
     margin-bottom: 10px;
     white-space: pre-wrap;
@@ -27,10 +27,12 @@
 
 <template>
 
-<div class="note">
-    <h1>{{note.title}}</h1>
-    <pre>{{note.content}}</pre>
-    <div id="myKey" style="display: none;">{{note.key}}</div>
+<div class="subject">
+    <h1>{{subject.subject}}</h1>
+    <pre>{{subject.lecturer}}</pre>
+    <pre>{{subject.timeFrom}}</pre>
+    <pre>{{subject.timeTo}}</pre>
+    <div id="myKey" style="display: none;">{{subject.key}}</div>
 </div>
 
 </template>
@@ -38,7 +40,7 @@
 <script>
 
 export default {
-    props: ['note']
+    props: ['subject']
 }
 
 </script>

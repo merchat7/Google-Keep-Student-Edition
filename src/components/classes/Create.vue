@@ -11,13 +11,14 @@
         box-shadow: 0 1px 5px #ccc;
     }
 
-    form.create-subject input {
+    form.create-subject input[type="notTimePicker"] {
         width: 100%;
         max-width: 100%;
         border: none;
         padding: 4px;
         outline: none;
         font-size: 1.2em;
+        padding-top: 20px;
     }
 
     form.create-subject button {
@@ -40,8 +41,6 @@
 <template>
 
     <form class="create-subject" v-on:submit.prevent="createSubject()">
-        <input name="title" v-model="title" placeholder="Subject Name" />
-        <input name="content" v-model="content" placeholder="Lecturer" rows="3"></input>
         <v-layout row wrap>
           <v-flex xs11 sm5>
             <v-menu
@@ -60,7 +59,7 @@
             <v-text-field
               slot="activator"
               v-model="timeFrom"
-              label="Picker in menu"
+              label="From"
               prepend-icon="access_time"
               readonly
             ></v-text-field>
@@ -84,7 +83,7 @@
           <v-text-field
             slot="activator"
             v-model="timeTo"
-            label="Picker in menu"
+            label="To"
             prepend-icon="access_time"
             readonly
           ></v-text-field>
@@ -92,6 +91,9 @@
         </v-menu>
       </v-flex>
       </v-layout>
+      <input name="subject" type="notTimePicker" v-model="subject" placeholder="Subject Name" />
+      <v-divider></v-divider>
+      <input name="lecturer" type="notTimePicker" v-model="lecturer" placeholder="Lecturer" rows="3"></input>
       <button type="submit">+</button>
     </form>
 
@@ -103,8 +105,8 @@
     export default {
         data() {
           return {
-              title: '',
-              content: '',
+              subject: '',
+              lecturer: '',
               menuFrom: false,
               timeFrom: null,
               menuTo: false,
@@ -115,18 +117,20 @@
           ...mapMutations(['replaceSubject']),
           createSubject() {
             const uid = auth.currentUser.uid;
-            if (this.$store.state.updatedSubjects.length > 0) this.replaceSubject(this.$store.state.updatedSubjects);
-            if (this.title.trim() || this.content.trim()) {
+            if (this.subject.trim() || this.lecturer.trim()) {
               db.ref('subjects/' + uid).push({
-                title: this.title,
-                content: this.content,
-                orderKey: this.$store.state.currentOrderKey
+                subject: this.subject,
+                lecturer: this.lecturer,
+                timeFrom: this.timeFrom,
+                timeTo: this.timeTo,
               }, (err) => {
                 if (err) {
                   alert(err)
                 }
-                this.title = '';
-                this.content = '';
+                this.subject = '';
+                this.lecturer = '';
+                this.timeFrom = null;
+                this.timeTo = null;
               })
             }
           }
