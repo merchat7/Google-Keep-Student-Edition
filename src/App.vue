@@ -1,118 +1,28 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      clipped
-      class="grey lighten-4"
-      app
-    >
-      <v-list
-        dense
-        class="grey lighten-4"
-      >
-        <template v-for="(item, i) in items">
-          <v-layout
-            v-if="item.heading"
-            :key="i"
-            row
-            align-center
-          >
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-              </v-subheader>
-            </v-flex>
-            <v-flex xs6 class="text-xs-right">
-              <v-btn small flat>edit</v-btn>
-            </v-flex>
-          </v-layout>
-          <v-divider
-            v-else-if="item.divider"
-            :key="i"
-            dark
-            class="my-3"
-          ></v-divider>
-          <v-list-tile
-            v-else
-            :key="i"
-            @click=""
-          >
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title class="grey--text">
-                {{ item.text }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar color="amber" app absolute clipped-left>
-      <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
-      <span class="title ml-3 mr-5">Google&nbsp;<span class="text">Keep</span></span>
-      <v-text-field
-        solo-inverted
-        flat
-        label="Search"
-        prepend-icon="search"
-      ></v-text-field>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-content>
-      <v-spacer></v-spacer>
-      <v-container>
-        <create-note-form></create-note-form>
-      </v-container>
-      <v-container fluid>
-        <notes></notes>
-      </v-container>
-    </v-content>
-  </v-app>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-  import Notes from './components/notes/Index'
-  import CreateNoteForm from './components/notes/Create'
-
-  export default {
-    data: () => ({
-      drawer: null,
-      items: [
-        { icon: 'lightbulb_outline', text: 'Notes' },
-        { icon: 'touch_app', text: 'Reminders' },
-        { divider: true },
-        { heading: 'Labels' },
-        { icon: 'add', text: 'Create new label' },
-        { divider: true },
-        { icon: 'archive', text: 'Archive' },
-        { icon: 'delete', text: 'Trash' },
-        { divider: true },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Trash' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Keyboard shortcuts' }
-      ]
-    }),
-    props: {
-      source: String
-    },
-    components: {
-      Notes,
-      CreateNoteForm
-    }
-  }
+export default {
+  name: 'app'
+}
 </script>
 
 <style>
+  html {
+    background: #ededed;
+  }
   #keep main .container {
     height: 660px;
   }
-  .navigation-drawer__border {
-    display: none;
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
   }
   .text {
     font-weight: 400;
