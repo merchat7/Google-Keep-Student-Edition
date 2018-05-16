@@ -9,6 +9,7 @@
           <input type="password" v-model="password2" name="password2" placeholder="Retype password" />
 
           <button v-on:click="signUp" type="submit">Sign Me Up </button>
+          <p>Or go back to <router-link to="/login">login</router-link></p>
         </div>
 
         <div class="right">
@@ -38,7 +39,7 @@
         if (this.password === this.password2) {
           auth.createUserWithEmailAndPassword(this.email, this.password).then(
             (user) => {
-              this.$router.replace('hello')
+              this.$router.replace('login')
             },
             (err) => {
               alert('Oops. ' + err.message)
@@ -122,6 +123,7 @@
 
     button[type="submit"] {
       margin-top: 15px;
+      margin-bottom: 25px;
       width: 120px;
       height: 32px;
       background: #16a085;
@@ -150,7 +152,7 @@
 
     .or {
       position: absolute;
-      top: 155px;
+      top: 125px;
       left: 280px;
       width: 40px;
       height: 40px;
@@ -163,7 +165,7 @@
 
     .right {
       position: absolute;
-      top: -10px;
+      top: -45px;
       right: 0;
       box-sizing: border-box;
       padding: 40px;

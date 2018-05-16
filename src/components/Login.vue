@@ -36,7 +36,7 @@
       signIn: function() {
         auth.signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
-            this.$router.replace('hello')
+            this.$router.replace('home')
           },
           (err) => {
             alert('Oops. ' + err.message)
