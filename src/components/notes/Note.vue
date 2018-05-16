@@ -49,16 +49,23 @@
 
 <template>
 
-<div class="note">
+<div class="note" @click=edit>
     <h1>{{note.title}}</h1>
     <pre>{{note.content}}</pre>
     <div id="myKey" style="display: none;">{{note.key}}</div>
-    <button class="delete" @click="remove" type="button">
+    <button class="delete" @click.stop="remove" type="button">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>
-    <button class="edit" @click="editClicked" type="button">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-    </button>
+    <v-menu auto full-width open-on-hover>
+        <button class="edit" type="button" slot="activator">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        <v-list>
+            <v-list-tile v-for="(item, index) in items" :key="index" @click=menuClicked(item.name)>
+                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            </v-list-tile>
+        </v-list>
+    </v-menu>
 </div>
 
 </template>
@@ -68,11 +75,27 @@
     import { mapMutations } from 'vuex'
 
     export default {
+        data: () => ({
+            showMenu: false,
+            items: [
+                {
+                    title: 'Edit note',
+                    name: 'Edit'
+                },
+                {
+                    title: 'Set reminder',
+                    name: 'Reminder'
+                },
+            ]
+        }),
         props: ['note'],
         methods: {
             ...mapMutations([
                 'setSelectedNote']),
-            editClicked() {
+            menuClicked(name) {
+                if (name === "Edit") this.edit();
+            },
+            edit() {
                 const clone = {...this.note}; // ensure only modified after pressing "save"
                 this.setSelectedNote(clone);
             },
