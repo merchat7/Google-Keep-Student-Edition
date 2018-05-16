@@ -39,7 +39,8 @@
                 'clearNotes',
                 'setUpdatedNotes',
                 'incrementLastCheckedIndex',
-                'removeNote'])
+                'removeNote',
+                'setDragging'])
         },
         mounted() {
             this.clearNotes(); // just for when code is updated, so that you don't need to refresh
@@ -60,8 +61,15 @@
                     packery.reloadItems();
                     let items = packery.getItemElements().reverse(); // Workaround to make it easier to keep track of new elements added
                     let currentIndex = this.$store.state.lastCheckedIndex;
+                    let updateDragStatus = function(bool) {
+                        let sleep = function(time) {return new Promise((resolve) => setTimeout(resolve, time));};
+                        if (!bool) sleep(100).then(() => {this.setDragging(bool);}); // sleep is used as mouseDown event is triggered after dragEnd event
+                        else {this.setDragging(bool);}
+                    };
                     for (currentIndex; currentIndex < items.length; currentIndex++) {
                         let draggie = new Draggabilly(items[currentIndex]);
+                        draggie.on( 'dragStart', updateDragStatus.bind(this, true));
+                        draggie.on( 'dragEnd', updateDragStatus.bind(this, false));
                         packery.bindDraggabillyEvents(draggie);
                         this.incrementLastCheckedIndex();
                     }

@@ -49,7 +49,7 @@
 
 <template>
 
-<div class="note" @click=edit>
+<div class="note" @click=noteClicked>
     <h1>{{note.title}}</h1>
     <pre>{{note.content}}</pre>
     <div id="myKey" style="display: none;">{{note.key}}</div>
@@ -92,6 +92,9 @@
         methods: {
             ...mapMutations([
                 'setSelectedNote']),
+            noteClicked() {
+                if (!this.$store.state.dragging) this.edit();
+            },
             menuClicked(name) {
                 if (name === "Edit") this.edit();
             },

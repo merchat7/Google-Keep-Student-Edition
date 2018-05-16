@@ -9,7 +9,8 @@ const state = {
     updatedNotes: [],
     currentOrderKey: 0,
     lastCheckedIndex: 0, // to ensusure Draggabilly is only bind once (otherwise buggy behavior)
-    selectedNote: null
+    selectedNote: null,
+    dragging: false
 };
 
 const mutations = {
@@ -48,6 +49,9 @@ const mutations = {
     },
     setSelectedNote(state, note) {
         state.selectedNote = note;
+    },
+    setDragging(state, bool) {
+        state.dragging = bool;
     }
 };
 
