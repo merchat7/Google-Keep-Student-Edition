@@ -56,7 +56,7 @@
     <button class="delete" @click="remove" type="button">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>
-    <button class="edit" type="button">
+    <button class="edit" @click="editClicked" type="button">
         <i class="fa fa-pencil" aria-hidden="true"></i>
     </button>
 </div>
@@ -65,10 +65,17 @@
 
 <script>
     import { db } from '../../firebase'
+    import { mapMutations } from 'vuex'
 
     export default {
         props: ['note'],
         methods: {
+            ...mapMutations([
+                'setSelectedNote']),
+            editClicked() {
+                const clone = {...this.note}; // ensure only modified after pressing "save"
+                this.setSelectedNote(clone);
+            },
             remove () {
                 db.ref('notes').child(this.note.key).remove();
             }

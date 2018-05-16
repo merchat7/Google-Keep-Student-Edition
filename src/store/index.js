@@ -8,7 +8,8 @@ const state = {
     notes: [],
     updatedNotes: [],
     currentOrderKey: 0,
-    lastCheckedIndex: 0 // to ensusure Draggabilly is only bind once (otherwise buggy behavior)
+    lastCheckedIndex: 0, // to ensusure Draggabilly is only bind once (otherwise buggy behavior)
+    selectedNote: null
 };
 
 const mutations = {
@@ -18,6 +19,13 @@ const mutations = {
     },
     replaceNotes (state, notes) {
         state.notes = notes;
+    },
+    replaceNoteByKey (state, note) {
+        if (state.updatedNotes.length > 0) state.notes = state.updatedNotes;
+        let index = getIndexByKey(note.key);
+        state.notes[index].title = note.title;
+        state.notes[index].content = note.content;
+        state.updatedNotes = [];
     },
     removeNote (state, key) {
         if (state.updatedNotes.length > 0) state.notes = state.updatedNotes;
@@ -37,6 +45,9 @@ const mutations = {
     },
     incrementLastCheckedIndex(state) {
         state.lastCheckedIndex++;
+    },
+    setSelectedNote(state, note) {
+        state.selectedNote = note;
     }
 };
 
