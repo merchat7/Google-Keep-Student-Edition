@@ -10,14 +10,12 @@
 </style>
 
 <template>
-
-    <div class="subjects" ref="subjects">
-        <subject v-for="subject in subjects"
-              :subject="subject"
-              :key="subject.key">
-        </subject>
-    </div>
-
+  <div class="subjects" ref="subjects">
+    <subject v-for="subject in subjects"
+        :subject="subject"
+        :key="subject.key">
+    </subject>
+  </div>
 </template>
 
 <script>
@@ -43,8 +41,29 @@
         fitWidth: true
       });
       db.ref('subjects/' + uid).on('child_added', (snapshot) => {
-        let subject = snapshot.val()
+        let subject = { subject: snapshot.val().subject,
+                        lecturer: snapshot.val().lecturer,
+                        timeFrom: snapshot.val().timeFrom,
+                        timeTo: snapshot.val().timeTo,
+                        key: snapshot.key
+                      };
         this.subjects.unshift(subject)
+        this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
+          packery.reloadItems()
+          packery.layout()
+        })
+      })
+      db.ref('subjects/' + uid).on('child_removed', (snapshot) => {
+        var index = 0;
+
+        for (let i=0; i < this.subjects.length; i++) {
+          if (this.subjects[i].key === snapshot.key) {
+            index = i;
+            break;
+          }
+        }
+
+        this.subjects.splice(index, 1)
         this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
           packery.reloadItems()
           packery.layout()

@@ -60,7 +60,7 @@
         prepend-icon="search"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn v-on:click="logout" color="error" >Log Out</v-btn>
+      <v-btn color="error" v-on:click="logout" >Log Out</v-btn>
     </v-toolbar>
     <v-content>
       <v-spacer></v-spacer>
