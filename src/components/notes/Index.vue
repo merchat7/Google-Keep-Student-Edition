@@ -37,9 +37,9 @@
             ...mapMutations([
                 'addNote',
                 'clearNotes',
-                'incrementOrderKey',
                 'setUpdatedNotes',
-                'incrementLastCheckedIndex'])
+                'incrementLastCheckedIndex',
+                'removeNote'])
         },
         mounted() {
             this.clearNotes(); // just for when code is updated, so that you don't need to refresh
@@ -55,7 +55,6 @@
                     content: snapshot.val().content,
                     key: snapshot.key};
                 this.addNote(note);
-                this.incrementOrderKey();
                 this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
                     //https://codepen.io/anon/pen/NMBvLM check here for more info
                     packery.reloadItems();
@@ -66,6 +65,13 @@
                         packery.bindDraggabillyEvents(draggie);
                         this.incrementLastCheckedIndex();
                     }
+                    packery.layout()
+                })
+            });
+            db.ref('notes').orderByChild("orderKey").on('child_removed', (snapshot) => {
+                this.removeNote(snapshot.key);
+                this.$nextTick(() => {
+                    packery.reloadItems();
                     packery.layout()
                 })
             });
