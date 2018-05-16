@@ -20,14 +20,15 @@
                 'setSelectedNote',
                 'replaceNoteByKey']),
             update () {
-                db.ref('notes').child(this.note.key).update(
+                 db.ref('notes').child(this.note.key).update(
                     {
                         title : this.note.title,
                         content : this.note.content
                     });
                 let noteLocal = {title: this.note.title,
                     content: this.note.content,
-                    key: this.note.key};
+                    key: this.note.key,
+                    index: this.note.index};
                 this.replaceNoteByKey(noteLocal);
                 this.dismissModal();
             },

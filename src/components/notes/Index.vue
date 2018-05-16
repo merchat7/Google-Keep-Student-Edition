@@ -12,8 +12,9 @@
 <template>
 
     <div class="notes" ref="notes">
-        <note v-for="note in this.myNotes"
+        <note v-for="(note, index) in this.myNotes"
               :note="note"
+              :index="index"
               :key="note.key">
         </note>
     </div>
@@ -41,9 +42,8 @@
             ...mapMutations([
                 'addNote',
                 'clearNotes',
-                'setUpdatedNotes',
+                'setNotes',
                 'incrementLastCheckedIndex',
-                'removeNote',
                 'setDragging'])
         },
         mounted() {
@@ -80,8 +80,7 @@
                     packery.layout()
                 })
             });
-            db.ref('notes').orderByChild("orderKey").on('child_removed', (snapshot) => {
-                this.removeNote(snapshot.key);
+            db.ref('notes').orderByChild("orderKey").on('child_removed', () => {
                 this.$nextTick(() => {
                     packery.reloadItems();
                     packery.layout()
@@ -107,7 +106,7 @@
                     db.ref().update(updates);
                     currentIndex--;
                 }
-                this.setUpdatedNotes(newNotes); // delay updating of notes in view until a CRUD operation (buggy behavior otherwise)
+                this.setNotes(newNotes);
             });
         }
     }

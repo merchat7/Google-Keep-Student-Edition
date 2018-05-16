@@ -88,10 +88,14 @@
                 },
             ]
         }),
-        props: ['note'],
+        props: [
+            'note',
+            'index'
+        ],
         methods: {
             ...mapMutations([
-                'setSelectedNote']),
+                'setSelectedNote',
+                'removeNote']),
             noteClicked() {
                 if (!this.$store.state.dragging) this.edit();
             },
@@ -100,9 +104,11 @@
             },
             edit() {
                 const clone = {...this.note}; // ensure only modified after pressing "save"
+                clone["index"] = this.index;
                 this.setSelectedNote(clone);
             },
             remove () {
+                this.removeNote(this.index); // Must remove locally before removing remotely, or buggy behavior
                 db.ref('notes').child(this.note.key).remove();
             }
         }
