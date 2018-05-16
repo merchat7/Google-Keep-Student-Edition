@@ -76,8 +76,8 @@
 
 <script>
   import { auth } from '../firebase'
-  import Notes from './notes/Index'
-  import CreateNoteForm from './notes/Create'
+  import Notes from './classes/Index'
+  import CreateNoteForm from './classes/Create'
   export default {
     data: () => ({
       drawer: null,

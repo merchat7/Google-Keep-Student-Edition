@@ -12,8 +12,6 @@
         </div>
 
         <div class="right">
-          <span class="loginwith">Sign in with<br/>social network</span>
-
           <button v-on:click="signInFacebook" class="social-signin facebook">Log in with facebook</button>
           <button v-on:click="signInGoogle" class="social-signin google">Log in with Google+</button>
         </div>
@@ -225,7 +223,7 @@
 
     .right {
       position: absolute;
-      top: -45px;
+      top: 60px;
       right: 0;
       box-sizing: border-box;
       padding: 40px;
