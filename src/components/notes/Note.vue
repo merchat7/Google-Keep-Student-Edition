@@ -30,6 +30,7 @@
 <div class="note">
     <h1>{{note.title}}</h1>
     <pre>{{note.content}}</pre>
+    <div id="myKey" style="display: none;">{{note.key}}</div>
 </div>
 
 </template>
