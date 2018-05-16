@@ -12,7 +12,7 @@
 <template>
 
     <div class="notes" ref="notes">
-        <note v-for="note in this.$store.state.notes"
+        <note v-for="note in this.myNotes"
               :note="note"
               :key="note.key">
         </note>
@@ -26,12 +26,16 @@
     import Draggabilly from 'draggabilly'
     import Note from './Note'
     import { db } from '../../firebase'
-    import { mapMutations } from 'vuex'
+    import { mapMutations, mapGetters } from 'vuex'
 
     export default {
-
         components: {
             Note
+        },
+        computed: {
+            ...mapGetters({
+                myNotes: 'getNotes'
+            })
         },
         methods: {
             ...mapMutations([

@@ -10,7 +10,12 @@ const state = {
     currentOrderKey: 0,
     lastCheckedIndex: 0, // to ensusure Draggabilly is only bind once (otherwise buggy behavior)
     selectedNote: null,
-    dragging: false
+    dragging: false,
+    class: null
+};
+
+const getters = {
+    getNotes: state => state.notes
 };
 
 const mutations = {
@@ -71,5 +76,6 @@ function getIndexByKey(key) {
 
 export default new Vuex.Store({
     state,
+    getters,
     mutations
 })
