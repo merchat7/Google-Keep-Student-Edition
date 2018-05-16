@@ -60,6 +60,7 @@
         prepend-icon="search"
       ></v-text-field>
       <v-spacer></v-spacer>
+      <v-btn v-on:click="logout" color="error" >Log Out</v-btn>
     </v-toolbar>
     <v-content>
       <v-spacer></v-spacer>
@@ -74,6 +75,7 @@
 </template>
 
 <script>
+  import { auth } from '../firebase'
   import Notes from './notes/Index'
   import CreateNoteForm from './notes/Create'
   export default {
@@ -102,6 +104,13 @@
     components: {
       Notes,
       CreateNoteForm
+    },
+    methods: {
+      logout: function() {
+        auth.signOut().then(() => {
+          this.$router.replace('login')
+        })
+      }
     }
   }
 </script>
