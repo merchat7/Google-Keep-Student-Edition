@@ -6,20 +6,20 @@ import Login from '@/components/Login'
 import Home from '@/components/Home'
 import SignUp from '@/components/SignUp'
 
-Vue.use(Router)
+Vue.use(Router);
 
 let router = new Router({
   routes: [
     {
         path: '*',
-        redirect: '/login',
-        meta: { requiresAuth: false }
+        redirect: '/home',
+        meta: { requiresAuth: true }
     },
-    {
+    /*{
         path: '/',
-        redirect: '/login',
-        meta: { requiresAuth: false }
-    },
+        redirect: '/home',
+        meta: { requiresAuth: true }
+    },*/
     {
         path: '/login',
         name: 'Login',
@@ -39,17 +39,27 @@ let router = new Router({
         meta: { requiresAuth: true }
     }
   ]
-})
+});
 
 router.beforeEach((to, from, next) => {
-  let currentUser = auth.currentUser;
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  console.log(requiresAuth);
-  console.log(currentUser);
-  if (requiresAuth && !currentUser) next('login') 
-  else if (!requiresAuth && currentUser) next('home')
-  else next()
-})
+  auth.onAuthStateChanged((user) => {
+      if(user) {
+          if (requiresAuth) {
+              next();
+          }
+          else { // don't let logged in user view login/sign-up page
+              next('home');
+          }
+      } else {
+          if (requiresAuth) {
+              next('login');
+          }
+          else {
+              next();
+          }
+      }
+  });
+});
 
 export default router
