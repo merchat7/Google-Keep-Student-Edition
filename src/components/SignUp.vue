@@ -1,24 +1,16 @@
 <template>
   <div class="sign-up">
       <div id="login-box">
-        <div class="left">
+        <div class="center">
           <h1>Sign up</h1>
 
           <input type="text" v-model="email" name="email" placeholder="E-mail" />
           <input type="password" v-model="password" name="password" placeholder="Password" />
           <input type="password" v-model="password2" name="password2" placeholder="Retype password" />
 
-          <button v-on:click="signUp" type="submit">Sign Me Up </button>
+          <button v-on:click="signUp" type="submit">Confirm</button>
           <p>Or go back to <router-link to="/login">login</router-link></p>
         </div>
-
-        <div class="right">
-          <span class="loginwith">Sign in with<br/>social network</span>
-
-          <button class="social-signin facebook">Log in with facebook</button>
-          <button class="social-signin google">Log in with Google+</button>
-        </div>
-        <div class="or">OR</div>
       </div>
   </div>
 </template>
@@ -82,13 +74,13 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
-    .left {
+    .center {
       position: absolute;
       top: 0;
       left: 0;
       box-sizing: border-box;
       padding: 40px;
-      width: 300px;
+      width: 600px;
       height: 400px;
     }
 
@@ -104,7 +96,7 @@
       box-sizing: border-box;
       margin-bottom: 20px;
       padding: 4px;
-      width: 220px;
+      width: 500px;
       height: 32px;
       border: none;
       border-bottom: 1px solid #AAA;
@@ -148,76 +140,5 @@
       opacity: 1;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
       transition: 0.1s ease;
-    }
-
-    .or {
-      position: absolute;
-      top: 125px;
-      left: 280px;
-      width: 40px;
-      height: 40px;
-      background: #DDD;
-      border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      line-height: 40px;
-      text-align: center;
-    }
-
-    .right {
-      position: absolute;
-      top: -45px;
-      right: 0;
-      box-sizing: border-box;
-      padding: 40px;
-      width: 300px;
-      height: 400px;
-      background: url('https://goo.gl/YbktSj');
-      background-size: cover;
-      background-position: center;
-      border-radius: 0 2px 2px 0;
-    }
-
-    .right .loginwith {
-      display: block;
-      margin-bottom: 40px;
-      font-size: 28px;
-      color: #FFF;
-      text-align: center;
-    }
-
-    button.social-signin {
-      margin-bottom: 20px;
-      width: 220px;
-      height: 36px;
-      border: none;
-      border-radius: 2px;
-      color: #FFF;
-      font-family: 'Roboto', sans-serif;
-      font-weight: 500;
-      transition: 0.2s ease;
-      cursor: pointer;
-    }
-
-    button.social-signin:hover,
-    button.social-signin:focus {
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      transition: 0.2s ease;
-    }
-
-    button.social-signin:active {
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-      transition: 0.2s ease;
-    }
-
-    button.social-signin.facebook {
-      background: #32508E;
-    }
-
-    button.social-signin.twitter {
-      background: #55ACEE;
-    }
-
-    button.social-signin.google {
-      background: #DD4B39;
     }
 </style>
