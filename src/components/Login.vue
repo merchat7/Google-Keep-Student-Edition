@@ -14,8 +14,8 @@
         <div class="right">
           <span class="loginwith">Sign in with<br/>social network</span>
 
-          <button class="social-signin facebook">Log in with facebook</button>
-          <button class="social-signin google">Log in with Google+</button>
+          <button v-on:click="signInFacebook" class="social-signin facebook">Log in with facebook</button>
+          <button v-on:click="signInGoogle" class="social-signin google">Log in with Google+</button>
         </div>
         <div class="or">OR</div>
       </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { auth } from '../firebase'
+  import firebase,{ auth } from '../firebase'
   export default {
     name: 'login',
     data: function() {
@@ -42,6 +42,72 @@
             alert('Oops. ' + err.message)
           }
         );
+      },
+
+      signInFacebook: function() {
+        if (!auth.currentUser) {
+          var provider = new firebase.auth.FacebookAuthProvider();
+
+          auth.signInWithPopup(provider).then(function(result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // [START_EXCLUDE]
+          if (errorCode === 'auth/account-exists-with-different-credential') {
+              alert('You have already signed up with a different auth provider for that email.');
+              // If you are using multiple auth providers on your app you should handle linking
+              // the user's accounts here.
+          } else {
+              console.error(error);
+          }
+        });
+        }
+        else {
+          auth.signOut();
+        }
+      },
+
+      signInGoogle: function() {
+        if (!auth.currentUser) {
+          var provider = new firebase.auth.GoogleAuthProvider();
+
+          auth.signInWithPopup(provider).then(function(result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+
+          }).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // [START_EXCLUDE]
+          if (errorCode === 'auth/account-exists-with-different-credential') {
+              alert('You have already signed up with a different auth provider for that email.');
+              // If you are using multiple auth providers on your app you should handle linking
+              // the user's accounts here.
+          } else {
+              console.error(error);
+          }
+        });
+        }
+        else {
+          auth.signOut();
+        }
       }
     }
   }
