@@ -107,7 +107,7 @@
                     db.ref().update(updates);
                     currentIndex--;
                 }
-                this.setUpdatedNotes(newNotes);
+                this.setUpdatedNotes(newNotes); // delay updating of notes in view until a CRUD operation (buggy behavior otherwise)
             });
         }
     }

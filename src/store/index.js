@@ -5,10 +5,12 @@ import { db } from '../firebase'
 Vue.use(Vuex);
 
 const state = {
+    /* Notes related */
     notes: [],
-    updatedNotes: [],
-    currentOrderKey: 0,
-    lastCheckedIndex: 0, // to ensusure Draggabilly is only bind once (otherwise buggy behavior)
+    updatedNotes: [], // After dragging, the new order is updated here (and should be updated before every operation)
+    currentOrderKey: 0, // The orderKey when creating a new note
+    lastCheckedIndex: 0, // to ensure Draggabilly is only bind once (otherwise buggy behavior)
+    /*---------------*/
     selectedNote: null,
     dragging: false,
     class: null
@@ -20,11 +22,11 @@ const getters = {
 
 const mutations = {
     addNote (state, note) {
+        if (state.updatedNotes.length > 0) state.notes = state.updatedNotes;
         state.notes.unshift(note);
+        state.updatedNotes = [];
         state.currentOrderKey++;
-    },
-    replaceNotes (state, notes) {
-        state.notes = notes;
+        // increment lastCheckedIndex when binding instead of here
     },
     replaceNoteByKey (state, note) {
         if (state.updatedNotes.length > 0) state.notes = state.updatedNotes;
@@ -32,6 +34,8 @@ const mutations = {
         state.notes[index].title = note.title;
         state.notes[index].content = note.content;
         state.updatedNotes = [];
+        //currentOrderKey no change
+        //lastChckedIndex no change
     },
     removeNote (state, key) {
         if (state.updatedNotes.length > 0) state.notes = state.updatedNotes;
@@ -45,6 +49,8 @@ const mutations = {
     clearNotes(state) {
         state.notes = [];
         state.updatedNotes = [];
+        state.currentOrderKey = 0;
+        state.lastCheckedIndex = 0;
     },
     setUpdatedNotes(state, notes) {
         state.updatedNotes = notes;
