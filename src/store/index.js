@@ -12,11 +12,12 @@ const state = {
     /*---------------*/
     selectedNote: null,
     dragging: false,
-    class: null
+    subjects: []
 };
 
 const getters = {
-    getNotes: state => state.notes
+    getNotes: state => state.notes,
+    getSubjects: state => state.subjects
 };
 
 const mutations = {
@@ -53,6 +54,9 @@ const mutations = {
     },
     setDragging(state, bool) {
         state.dragging = bool;
+    },
+    addSubject(state, subject) {
+        state.subjects.unshift(subject);
     }
 };
 

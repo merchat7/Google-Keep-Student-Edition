@@ -11,7 +11,7 @@
 
 <template>
   <div class="subjects" ref="subjects">
-    <subject v-for="subject in subjects"
+    <subject v-for="subject in this.mySubjects"
         :subject="subject"
         :key="subject.key">
     </subject>
@@ -23,14 +23,19 @@
   import Draggabilly from 'draggabilly'
   import Subject from './Class'
   import { auth,db } from '../../firebase'
-  import { mapMutations } from 'vuex'
+  import { mapMutations, mapGetters } from 'vuex'
 
   export default {
     components: {
         Subject
     },
-    data() {
-      return { subjects: [] }
+    computed: {
+        ...mapGetters({
+            mySubjects: 'getSubjects'
+        })
+    },
+    methods: {
+        ...mapMutations(['addSubject'])
     },
     mounted() {
       const uid = auth.currentUser.uid;
@@ -41,13 +46,19 @@
         fitWidth: true
       });
       db.ref('subjects/' + uid).on('child_added', (snapshot) => {
+        var subjectExists = false;
         let subject = { subject: snapshot.val().subject,
                         lecturer: snapshot.val().lecturer,
                         timeFrom: snapshot.val().timeFrom,
                         timeTo: snapshot.val().timeTo,
                         key: snapshot.key
                       };
-        this.subjects.unshift(subject)
+        console.log("SUBJECT: " + subject.key);
+        for (var oldSubject in this.mySubjects) {
+          console.log("SUBJECT OLD: " + oldSubject.key);
+          if (oldSubject.key === subject.key) subjectExists = true;
+        }
+        if (subjectExists === false) this.addSubject(subject);
         this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
           packery.reloadItems()
           packery.layout()

@@ -11,43 +11,55 @@
         dense
         class="grey lighten-4"
       >
-        <template v-for="(item, i) in items">
-          <v-layout
-            v-if="item.heading"
-            :key="i"
-            row
-            align-center
-          >
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-              </v-subheader>
-            </v-flex>
-            <v-flex xs6 class="text-xs-right">
-              <v-btn small flat>edit</v-btn>
-            </v-flex>
-          </v-layout>
-          <v-divider
+        <v-flex xs6>
+          <v-subheader>Classes</v-subheader>
+        </v-flex>
+        <v-list-tile
+          avatar
+          ripple
+          @click="addClassButton=!addClassButton"
+        >
+          <v-list-tile-action>
+            <v-icon>add</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="text">
+              Add new class
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <template v-for="(subject, i) in this.mySubjects">
+          <!-- <v-divider
             v-else-if="item.divider"
             :key="i"
-            dark
             class="my-3"
-          ></v-divider>
+          ></v-divider> -->
           <v-list-tile
-            v-else
             :key="i"
+            ripple
             @click=""
           >
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title class="grey--text">
-                {{ item.text }}
+                {{ subject.subject }}
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>
+        <v-list-tile
+          avatar
+          ripple
+          @click="logout"
+        >
+          <v-list-tile-action>
+            <v-icon>archive</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="text">
+              Log Out
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="amber" app absolute clipped-left>
@@ -60,11 +72,10 @@
         prepend-icon="search"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn color="error" v-on:click="logout" >Log Out</v-btn>
     </v-toolbar>
     <v-content>
       <v-spacer></v-spacer>
-      <v-container>
+      <v-container v-if="addClassButton">
         <create-note-form></create-note-form>
       </v-container>
       <v-container fluid>
@@ -79,29 +90,26 @@
   import { auth } from '../firebase'
   import Notes from './classes/Index'
   import CreateNoteForm from './classes/Create'
+  import { mapMutations, mapGetters } from 'vuex'
   // import UpdateModal from './notes/UpdateModal'
   export default {
     data: () => ({
       drawer: null,
+      addClassButton: false,
       items: [
-        { icon: 'lightbulb_outline', text: 'Notes' },
-        { icon: 'touch_app', text: 'Reminders' },
         { divider: true },
-        { heading: 'Labels' },
-        { icon: 'add', text: 'Create new label' },
+        { icon: 'archive', text: 'Archive', function: '' },
+        { icon: 'delete', text: 'Trash', function: '' },
         { divider: true },
-        { icon: 'archive', text: 'Archive' },
-        { icon: 'delete', text: 'Trash' },
-        { divider: true },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Trash' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Keyboard shortcuts' }
       ]
     }),
     props: {
       source: String
+    },
+    computed: {
+        ...mapGetters({
+            mySubjects: 'getSubjects'
+        })
     },
     components: {
       Notes,
@@ -111,6 +119,7 @@
     methods: {
       logout: function() {
         auth.signOut().then(() => {
+          console.log(this.mySubjects.length);
           this.$router.replace('login')
         })
       }
