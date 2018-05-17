@@ -41,6 +41,7 @@
 <template>
 
     <form class="create-subject" v-on:submit.prevent="createSubject()">
+        <h1 class="grey--text">Add A Class</h1>
         <v-layout row wrap>
           <v-flex xs11 sm5>
             <v-menu

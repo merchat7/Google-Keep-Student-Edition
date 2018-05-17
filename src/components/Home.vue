@@ -33,8 +33,9 @@
         <v-list-tile
           avatar
           ripple
-          v-else
-          @click="addClassButton=!addClassButton"
+          v-else-if="myCurrentDisplaySubject != null && !inClassAddNote"
+          @click="addClassButton=!addClassButton
+                  inClassAddNote = !inClassAddNote"
         >
           <v-list-tile-action>
             <v-icon>add</v-icon>
@@ -42,6 +43,21 @@
           <v-list-tile-content>
             <v-list-tile-title class="text">
               Add new note
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile
+          avatar
+          ripple
+          v-else-if="myCurrentDisplaySubject != null && inClassAddNote"
+          @click="inClassAddNote = !inClassAddNote"
+        >
+          <v-list-tile-action>
+            <v-icon>add</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="text">
+              Update class information
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
@@ -95,46 +111,38 @@
       </v-container>
     </v-content>
     <v-content v-else="myCurrentDisplaySubject != null">
-      <v-container>
+      <v-container v-if="!inClassAddNote">
         <update-class></update-class>
+      </v-container>
+      <v-container v-else-if="inClassAddNote">
+        <create-note-form></create-note-form>
       </v-container>
       <v-container fluid>
         <classes></classes>
         <update-modal :note="this.$store.state.selectedNote ? this.$store.state.selectedNote : null"></update-modal>
+      </v-container>
+      <v-container>
+        <notes></notes>
       </v-container>
     </v-content>
   </v-app>
 </template>
 
 <script>
-  import { auth } from '../firebase'
+  import { db,auth } from '../firebase'
   import Classes from './classes/Index'
   import UpdateClass from './classes/Update'
   import Notes from './notes/Index'
   import CreateClassForm from './classes/Create'
+  import CreateNoteForm from './notes/Create'
   import { mapMutations, mapGetters } from 'vuex'
   import UpdateModal from './notes/UpdateModal'
   export default {
     data: () => ({
       drawer: null,
       addClassButton: false,
-      currentDisplaySubject: null,
-      items: [
-        // { icon: 'lightbulb_outline', text: 'Notes' },
-        // { icon: 'touch_app', text: 'Reminders' },
-        // { divider: true },
-        { heading: 'Labels' },
-        { icon: 'add', text: 'Create new label' },
-        // { divider: true },
-        // { icon: 'archive', text: 'Archive' },
-        // { icon: 'delete', text: 'Trash' },
-        // { divider: true },
-        // { icon: 'settings', text: 'Settings' },
-        // { icon: 'chat_bubble', text: 'Trash' },
-        // { icon: 'help', text: 'Help' },
-        // { icon: 'phonelink', text: 'App downloads' },
-        // { icon: 'keyboard', text: 'Keyboard shortcuts' }
-      ]
+      inClassAddNote: false,
+      currentDisplaySubject: null
     }),
     props: {
       source: String
@@ -150,22 +158,27 @@
       Notes,
       UpdateClass,
       CreateClassForm,
+      CreateNoteForm,
       UpdateModal
      },
     methods: {
-      ...mapMutations(['setCurrentDisplaySubject']),
+      ...mapMutations([
+        'setCurrentDisplaySubject',
+        'setCurrentNoteRef'
+      ]),
       logout: function() {
         auth.signOut().then(() => {
-          console.log(this.mySubjects.length);
           this.$router.replace('login')
         })
       },
       toggleClass: function(key) {
+        const uid = auth.currentUser.uid;
         if (key != this.myCurrentDisplaySubject) {
           this.setCurrentDisplaySubject(key);
-          console.log(this.myCurrentDisplaySubject);
+          this.setCurrentNoteRef(db.ref('notes/' + uid + this.myCurrentDisplaySubject))
         } else {
           this.setCurrentDisplaySubject(null);
+          this.setCurrentNoteRef(null)
         }
       }
     }

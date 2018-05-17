@@ -41,6 +41,7 @@
 <template>
 
     <form class="create-subject" v-on:submit.prevent="editSubject()">
+        <h1 class="grey--text">Edit Class Information</h1>
         <v-layout row wrap>
           <v-flex xs11 sm5>
             <v-menu
