@@ -1,5 +1,14 @@
 <template>
   <div id="app">
+    <notifications group="reminder"
+                   position="bottom left"
+                   :duration = -1
+                   :reverse=true>
+    </notifications>
+    <notifications group="info"
+                     position="top center"
+                     :duration = 1000
+                     width="300"/>
     <router-view></router-view>
   </div>
 </template>

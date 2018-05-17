@@ -31,6 +31,12 @@
                     index: this.note.index};
                 this.replaceNoteByKey(noteLocal);
                 this.dismissModal();
+                this.$notify({
+                    group: 'info',
+                    title: '[Success]',
+                    text: "All note changes saved",
+                    type: 'success'
+                });
             },
             dismissModal () {
                 this.setSelectedNote(null);

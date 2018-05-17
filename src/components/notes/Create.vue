@@ -69,6 +69,12 @@
                         if (err) {
                             alert(err)
                         }
+                        this.$notify({
+                            group: 'info',
+                            title: '[Success]',
+                            text: "Note was successfully added",
+                            type: 'success'
+                        });
                         this.title = '';
                         this.content = '';
                     })

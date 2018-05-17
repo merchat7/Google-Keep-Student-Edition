@@ -53,12 +53,12 @@
     <v-toolbar color="amber" app absolute clipped-left>
       <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
       <span class="title ml-3 mr-5">Google&nbsp;<span class="text">Keep</span></span>
-      <v-text-field
-        solo-inverted
-        flat
-        label="Search"
-        prepend-icon="search"
-      ></v-text-field>
+      <!--<v-text-field-->
+        <!--solo-inverted-->
+        <!--flat-->
+        <!--label="Search"-->
+        <!--prepend-icon="search"-->
+      <!--&gt;</v-text-field>-->
       <v-spacer></v-spacer>
       <v-btn v-on:click="logout" color="error" >Log Out</v-btn>
     </v-toolbar>
@@ -84,20 +84,20 @@
     data: () => ({
       drawer: null,
       items: [
-        { icon: 'lightbulb_outline', text: 'Notes' },
-        { icon: 'touch_app', text: 'Reminders' },
-        { divider: true },
+        // { icon: 'lightbulb_outline', text: 'Notes' },
+        // { icon: 'touch_app', text: 'Reminders' },
+        // { divider: true },
         { heading: 'Labels' },
         { icon: 'add', text: 'Create new label' },
-        { divider: true },
-        { icon: 'archive', text: 'Archive' },
-        { icon: 'delete', text: 'Trash' },
-        { divider: true },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Trash' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Keyboard shortcuts' }
+        // { divider: true },
+        // { icon: 'archive', text: 'Archive' },
+        // { icon: 'delete', text: 'Trash' },
+        // { divider: true },
+        // { icon: 'settings', text: 'Settings' },
+        // { icon: 'chat_bubble', text: 'Trash' },
+        // { icon: 'help', text: 'Help' },
+        // { icon: 'phonelink', text: 'App downloads' },
+        // { icon: 'keyboard', text: 'Keyboard shortcuts' }
       ]
     }),
     props: {

@@ -28,6 +28,7 @@
     import Note from './Note'
     import { db } from '../../firebase'
     import { mapMutations, mapGetters } from 'vuex'
+    import ReminderFunc from './ReminderModal'
 
     export default {
         components: {
@@ -44,7 +45,18 @@
                 'clearNotes',
                 'setNotes',
                 'incrementLastCheckedIndex',
-                'setDragging'])
+                'setDragging']),
+            setReminderNotification (note) {
+                // TODO: Refactor, similiar function in ReminderModal
+                let timeTillNotify = note.reminderTime - Date.now();
+                if (timeTillNotify >= 0 && timeTillNotify < 2147483647) {
+                    return setTimeout(() => {this.$notify({
+                        group: 'reminder',
+                        title: note.title + " (" + ReminderFunc.methods.formatDate(new Date(Date.now())) + ")",
+                        text: note.content,
+                    });}, timeTillNotify);
+                }
+            }
         },
         mounted() {
             this.clearNotes(); // just for when code is updated, so that you don't need to refresh
@@ -58,7 +70,9 @@
             db.ref('notes').orderByChild("orderKey").on('child_added', (snapshot) => {
                 let note = {title: snapshot.val().title,
                     content: snapshot.val().content,
+                    reminderTime: snapshot.val().reminderTime,
                     key: snapshot.key};
+                note["reminderAlert"] = this.setReminderNotification(note);
                 this.addNote(note);
                 this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
                     //https://codepen.io/anon/pen/NMBvLM check here for more info

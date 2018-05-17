@@ -64,8 +64,10 @@
             <v-list-tile v-for="(item, index) in items" :key="index" @click=menuClicked(item.name)>
                 <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile>
+            <v-list-tile v-if="this.note.reminderTime" @click="removeReminder">Remove reminder</v-list-tile>
         </v-list>
     </v-menu>
+    <ReminderModal :showModal="showModal" :note="this.note" :index="this.index" @close="showModal=false"></ReminderModal>
 </div>
 
 </template>
@@ -73,10 +75,11 @@
 <script>
     import { db } from '../../firebase'
     import { mapMutations } from 'vuex'
+    import ReminderModal from './ReminderModal';
 
     export default {
         data: () => ({
-            showMenu: false,
+            showModal: false,
             items: [
                 {
                     title: 'Edit note',
@@ -84,7 +87,7 @@
                 },
                 {
                     title: 'Set reminder',
-                    name: 'Reminder'
+                    name: 'setReminder'
                 },
             ]
         }),
@@ -92,6 +95,9 @@
             'note',
             'index'
         ],
+        components: {
+            ReminderModal
+        },
         methods: {
             ...mapMutations([
                 'setSelectedNote',
@@ -101,6 +107,7 @@
             },
             menuClicked(name) {
                 if (name === "Edit") this.edit();
+                else if (name === "setReminder") this.showModal = true;
             },
             edit() {
                 const clone = {...this.note}; // ensure only modified after pressing "save"
@@ -108,8 +115,27 @@
                 this.setSelectedNote(clone);
             },
             remove () {
+                clearTimeout(this.$store.state.notes[this.index]["reminderAlert"]);
                 this.removeNote(this.index); // Must remove locally before removing remotely, or buggy behavior
                 db.ref('notes').child(this.note.key).remove();
+                this.$notify({
+                    group: 'info',
+                    title: '[Success]',
+                    text: "Note was successfully removed",
+                    type: 'success'
+                });
+            },
+            removeReminder () {
+                this.$store.state.notes[this.index]["reminderTime"] = null; // Vue cannot detect if delete object[key] is done
+                clearTimeout(this.$store.state.notes[this.index]["reminderAlert"]);
+                this.$store.state.notes[this.index]["reminderAlert"] = null;
+                db.ref('notes/' + this.note.key).child("reminderTime").remove();
+                this.$notify({
+                    group: 'info',
+                    title: '[Success]',
+                    text: "Reminder was successfully removed",
+                    type: 'success'
+                });
             }
         }
     }
