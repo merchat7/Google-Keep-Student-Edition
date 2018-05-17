@@ -172,14 +172,20 @@
         })
       },
       toggleClass: function(key) {
-        const uid = auth.currentUser.uid;
-        if (key != this.myCurrentDisplaySubject) {
-          this.setCurrentDisplaySubject(key);
-          this.setCurrentNoteRef(db.ref('notes/' + uid + this.myCurrentDisplaySubject))
-        } else {
-          this.setCurrentDisplaySubject(null);
-          this.setCurrentNoteRef(null)
-        }
+          const uid = auth.currentUser.uid;
+          if (key !== this.myCurrentDisplaySubject) {
+              this.setCurrentDisplaySubject(null);
+              this.setCurrentNoteRef(null);
+              // workaround to force mounted in component/notes/Index.vue to be called
+              let sleep = function(time) {return new Promise((resolve) => setTimeout(resolve, time));};
+              sleep(100).then(() => {
+                  this.setCurrentDisplaySubject(key);
+                  this.setCurrentNoteRef(db.ref('notes/' + uid + this.myCurrentDisplaySubject))
+              });
+          } else {
+              this.setCurrentDisplaySubject(null);
+              this.setCurrentNoteRef(null);
+          }
       }
     }
   }
