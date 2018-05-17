@@ -56,13 +56,11 @@ const mutations = {
     setDragging(state, bool) {
         state.dragging = bool;
     },
-<<<<<<< HEAD
     addSubject(state, subject) {
         state.subjects.unshift(subject);
-=======
+    },
     setCurrentNoteRef (state, ref) {
         state.currentNoteRef = ref;
->>>>>>> master
     }
 };
 
