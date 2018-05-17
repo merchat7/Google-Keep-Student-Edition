@@ -1,3 +1,5 @@
+https://trello.com/b/BhCKQCFB/google-keep-student-edition
+
 # gkeep-studente
 
 > A Vue.js project
