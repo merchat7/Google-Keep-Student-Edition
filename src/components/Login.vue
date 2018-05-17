@@ -1,13 +1,13 @@
 <template>
   <div class="login">
-      <div id="login-box">
+      <div @keyup.enter="signIn" id="login-box">
         <div class="left">
           <h1>Log In</h1>
 
           <input type="text" v-model="email" name="email" placeholder="E-mail" />
           <input type="password" v-model="password" name="password" placeholder="Password" />
 
-          <button v-on:click="signIn" type="submit">Log In</button>
+          <button @click="signIn" type="submit">Log In</button>
           <p>Don't have an account? <router-link to="/sign-up">Sign up</router-link></p>
         </div>
 

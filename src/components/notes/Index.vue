@@ -12,8 +12,9 @@
 <template>
 
     <div class="notes" ref="notes">
-        <note v-for="note in this.$store.state.notes"
+        <note v-for="(note, index) in this.myNotes"
               :note="note"
+              :index="index"
               :key="note.key">
         </note>
     </div>
@@ -26,20 +27,24 @@
     import Draggabilly from 'draggabilly'
     import Note from './Note'
     import { db } from '../../firebase'
-    import { mapMutations } from 'vuex'
+    import { mapMutations, mapGetters } from 'vuex'
 
     export default {
-
         components: {
             Note
+        },
+        computed: {
+            ...mapGetters({
+                myNotes: 'getNotes'
+            })
         },
         methods: {
             ...mapMutations([
                 'addNote',
                 'clearNotes',
-                'incrementOrderKey',
-                'setUpdatedNotes',
-                'incrementLastCheckedIndex'])
+                'setNotes',
+                'incrementLastCheckedIndex',
+                'setDragging'])
         },
         mounted() {
             this.clearNotes(); // just for when code is updated, so that you don't need to refresh
@@ -49,22 +54,35 @@
                 gutter: 16,
                 fitWidth: true
             });
+            db.ref('notes').orderByChild("orderKey").off();
             db.ref('notes').orderByChild("orderKey").on('child_added', (snapshot) => {
                 let note = {title: snapshot.val().title,
                     content: snapshot.val().content,
                     key: snapshot.key};
                 this.addNote(note);
-                this.incrementOrderKey();
                 this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
                     //https://codepen.io/anon/pen/NMBvLM check here for more info
                     packery.reloadItems();
                     let items = packery.getItemElements().reverse(); // Workaround to make it easier to keep track of new elements added
                     let currentIndex = this.$store.state.lastCheckedIndex;
+                    let updateDragStatus = function(bool) {
+                        let sleep = function(time) {return new Promise((resolve) => setTimeout(resolve, time));};
+                        if (!bool) sleep(100).then(() => {this.setDragging(bool);}); // sleep is used as mouseDown event is triggered after dragEnd event
+                        else {this.setDragging(bool);}
+                    };
                     for (currentIndex; currentIndex < items.length; currentIndex++) {
                         let draggie = new Draggabilly(items[currentIndex]);
+                        draggie.on( 'dragStart', updateDragStatus.bind(this, true));
+                        draggie.on( 'dragEnd', updateDragStatus.bind(this, false));
                         packery.bindDraggabillyEvents(draggie);
                         this.incrementLastCheckedIndex();
                     }
+                    packery.layout()
+                })
+            });
+            db.ref('notes').orderByChild("orderKey").on('child_removed', () => {
+                this.$nextTick(() => {
+                    packery.reloadItems();
                     packery.layout()
                 })
             });
@@ -88,7 +106,7 @@
                     db.ref().update(updates);
                     currentIndex--;
                 }
-                this.setUpdatedNotes(newNotes);
+                this.setNotes(newNotes);
             });
         }
     }

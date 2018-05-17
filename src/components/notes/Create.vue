@@ -51,7 +51,6 @@
 
 <script>
     import { db } from '../../firebase'
-    import { mapMutations } from 'vuex'
     export default {
         data() {
             return {
@@ -60,11 +59,7 @@
             }
         },
         methods: {
-            ...mapMutations([
-                'replaceNotes'])
-            ,
             createNote() {
-                if (this.$store.state.updatedNotes.length > 0) this.replaceNotes(this.$store.state.updatedNotes);
                 if (this.title.trim() || this.content.trim()) {
                     db.ref('notes').push({
                         title: this.title,

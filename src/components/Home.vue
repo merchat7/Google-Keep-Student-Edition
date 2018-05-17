@@ -69,6 +69,7 @@
       </v-container>
       <v-container fluid>
         <notes></notes>
+        <update-modal :note="this.$store.state.selectedNote ? this.$store.state.selectedNote : null"></update-modal>
       </v-container>
     </v-content>
   </v-app>
@@ -78,6 +79,7 @@
   import { auth } from '../firebase'
   import Notes from './classes/Index'
   import CreateNoteForm from './classes/Create'
+  // import UpdateModal from './notes/UpdateModal'
   export default {
     data: () => ({
       drawer: null,
@@ -103,8 +105,9 @@
     },
     components: {
       Notes,
-      CreateNoteForm
-    },
+      CreateNoteForm,
+      // UpdateModal
+     },
     methods: {
       logout: function() {
         auth.signOut().then(() => {
