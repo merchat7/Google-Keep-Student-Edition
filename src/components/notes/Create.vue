@@ -50,7 +50,6 @@
 </template>
 
 <script>
-    import { db } from '../../firebase'
     export default {
         data() {
             return {
@@ -61,7 +60,7 @@
         methods: {
             createNote() {
                 if (this.title.trim() || this.content.trim()) {
-                    db.ref('notes').push({
+                    this.$store.state.currentNoteRef.push({
                         title: this.title,
                         content: this.content,
                         orderKey: this.$store.state.currentOrderKey
@@ -69,6 +68,12 @@
                         if (err) {
                             alert(err)
                         }
+                        this.$notify({
+                            group: 'info',
+                            title: '[Success]',
+                            text: "Note was successfully added",
+                            type: 'success'
+                        });
                         this.title = '';
                         this.content = '';
                     })

@@ -26,8 +26,8 @@
     import Packery from 'packery'
     import Draggabilly from 'draggabilly'
     import Note from './Note'
-    import { db } from '../../firebase'
     import { mapMutations, mapGetters } from 'vuex'
+    import ReminderFunc from './ReminderModal'
 
     export default {
         components: {
@@ -44,7 +44,18 @@
                 'clearNotes',
                 'setNotes',
                 'incrementLastCheckedIndex',
-                'setDragging'])
+                'setDragging']),
+            setReminderNotification (note) {
+                // TODO: Refactor, similiar function in ReminderModal
+                let timeTillNotify = note.reminderTime - Date.now();
+                if (timeTillNotify >= 0 && timeTillNotify < 2147483647) {
+                    return setTimeout(() => {this.$notify({
+                        group: 'reminder',
+                        title: note.title + " (" + ReminderFunc.methods.formatDate(new Date(Date.now())) + ")",
+                        text: note.content,
+                    });}, timeTillNotify);
+                }
+            }
         },
         mounted() {
             this.clearNotes(); // just for when code is updated, so that you don't need to refresh
@@ -54,11 +65,13 @@
                 gutter: 16,
                 fitWidth: true
             });
-            db.ref('notes').orderByChild("orderKey").off();
-            db.ref('notes').orderByChild("orderKey").on('child_added', (snapshot) => {
+            this.$store.state.currentNoteRef.orderByChild("orderKey").off();
+            this.$store.state.currentNoteRef.orderByChild("orderKey").on('child_added', (snapshot) => {
                 let note = {title: snapshot.val().title,
                     content: snapshot.val().content,
+                    reminderTime: snapshot.val().reminderTime,
                     key: snapshot.key};
+                note["reminderAlert"] = this.setReminderNotification(note);
                 this.addNote(note);
                 this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
                     //https://codepen.io/anon/pen/NMBvLM check here for more info
@@ -80,7 +93,7 @@
                     packery.layout()
                 })
             });
-            db.ref('notes').orderByChild("orderKey").on('child_removed', () => {
+            this.$store.state.currentNoteRef.orderByChild("orderKey").on('child_removed', () => {
                 this.$nextTick(() => {
                     packery.reloadItems();
                     packery.layout()
@@ -92,18 +105,11 @@
                 let currentIndex = items.length-1;
                 let newNotes = [];
                 for (let i = 0; i < items.length; i++) {
-                    let title = items[i].getElementsByTagName("h1")[0].innerHTML;
-                    let content = items[i].getElementsByTagName("pre")[0].innerHTML;
-                    let key = items[i].children[2].innerHTML;
-                    let note = {
-                        title: title,
-                        content: content,
-                        key: key
-                    };
+                    let index = items[i].children[2].innerHTML;
+                    let note = this.$store.state.notes[index];
+                    let key = note.key;
                     newNotes.push(note);
-                    let updates = {};
-                    updates['notes/' + key + '/orderKey'] = currentIndex;
-                    db.ref().update(updates);
+                    this.$store.state.currentNoteRef.child(key).update({"orderKey": currentIndex});
                     currentIndex--;
                 }
                 this.setNotes(newNotes);

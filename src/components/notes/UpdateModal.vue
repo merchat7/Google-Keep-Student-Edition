@@ -10,7 +10,6 @@
 </template>
 
 <script>
-    import { db } from '../../firebase'
     import { mapMutations } from 'vuex'
 
     export default {
@@ -20,7 +19,7 @@
                 'setSelectedNote',
                 'replaceNoteByKey']),
             update () {
-                 db.ref('notes').child(this.note.key).update(
+                this.$store.state.currentNoteRef.child(this.note.key).update(
                     {
                         title : this.note.title,
                         content : this.note.content
@@ -31,6 +30,12 @@
                     index: this.note.index};
                 this.replaceNoteByKey(noteLocal);
                 this.dismissModal();
+                this.$notify({
+                    group: 'info',
+                    title: '[Success]',
+                    text: "All note changes saved",
+                    type: 'success'
+                });
             },
             dismissModal () {
                 this.setSelectedNote(null);
