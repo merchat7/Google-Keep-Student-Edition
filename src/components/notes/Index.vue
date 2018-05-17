@@ -109,8 +109,6 @@
                     let note = this.$store.state.notes[index];
                     let key = note.key;
                     newNotes.push(note);
-                    let updates = {};
-                    updates['notes/' + key + '/orderKey'] = currentIndex;
                     this.$store.state.currentNoteRef.child(key).update({"orderKey": currentIndex});
                     currentIndex--;
                 }
