@@ -12,13 +12,17 @@ const state = {
     /*---------------*/
     selectedNote: null,
     dragging: false,
+    /* Class */
     subjects: [],
+    currentDisplaySubject: null,
+    /*---------------*/
     currentNoteRef: db.ref("notes") //to be changed
 };
 
 const getters = {
     getNotes: state => state.notes,
-    getSubjects: state => state.subjects
+    getSubjects: state => state.subjects,
+    getCurrentDisplaySubject: state => state.currentDisplaySubject
 };
 
 const mutations = {
@@ -58,6 +62,12 @@ const mutations = {
     },
     addSubject(state, subject) {
         state.subjects.unshift(subject);
+    },
+    removeSubject (state, subject) {
+        state.subjects.splice(subject, 1);
+    },
+    setCurrentDisplaySubject(state, key) {
+        state.currentDisplaySubject = key;
     },
     setCurrentNoteRef (state, ref) {
         state.currentNoteRef = ref;

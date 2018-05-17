@@ -127,6 +127,12 @@
                 if (err) {
                   alert(err)
                 }
+                this.$notify({
+                    group: 'info',
+                    title: '[Success]',
+                    text: "Class was successfully added",
+                    type: 'success'
+                });
                 this.subject = '';
                 this.lecturer = '';
                 this.timeFrom = null;

@@ -58,6 +58,7 @@
       deleteSubject() {
         const uid = auth.currentUser.uid;
         db.ref('subjects/' + uid).child(this.subject.key).remove();
+        location.reload()
       },
       editSubject() {
 

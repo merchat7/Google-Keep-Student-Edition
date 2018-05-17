@@ -7,13 +7,24 @@
         margin: 8px 0;
         width: 240px;
     }
+    form.hint {
+        position: relative;
+        width: 80%;
+        max-width: 100%;
+        margin: 0 auto 15px;
+        background: #fff;
+        padding: 15px;
+        border-radius: 2px;
+        box-shadow: 0 1px 5px #ccc;
+    }
 </style>
 
 <template>
   <div class="subjects" ref="subjects">
-    <subject v-for="subject in this.mySubjects"
-        :subject="subject"
-        :key="subject.key">
+    <subject v-for="(subject, i) in this.mySubjects"
+            :subject="subject"
+            :myKey="i"
+            v-if="subject.key === myCurrentDisplaySubject">
     </subject>
   </div>
 </template>
@@ -26,16 +37,21 @@
   import { mapMutations, mapGetters } from 'vuex'
 
   export default {
+    props: ['subject'],
     components: {
         Subject
     },
     computed: {
         ...mapGetters({
-            mySubjects: 'getSubjects'
+            mySubjects: 'getSubjects',
+            myCurrentDisplaySubject: 'getCurrentDisplaySubject'
         })
     },
     methods: {
-        ...mapMutations(['addSubject'])
+        ...mapMutations([
+          'addSubject',
+          'removeSubject'
+        ])
     },
     mounted() {
       const uid = auth.currentUser.uid;
@@ -53,12 +69,9 @@
                         timeTo: snapshot.val().timeTo,
                         key: snapshot.key
                       };
-        console.log("SUBJECT: " + subject.key);
-        for (var oldSubject in this.mySubjects) {
-          console.log("SUBJECT OLD: " + oldSubject.key);
-          if (oldSubject.key === subject.key) subjectExists = true;
-        }
-        if (subjectExists === false) this.addSubject(subject);
+        for (var index in this.mySubjects)
+          if (this.mySubjects[index].key === subject.key) subjectExists = true;
+        if (!subjectExists) this.addSubject(subject);
         this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
           packery.reloadItems()
           packery.layout()
@@ -74,7 +87,7 @@
           }
         }
 
-        this.subjects.splice(index, 1)
+        this.removeSubject(index);
         this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
           packery.reloadItems()
           packery.layout()

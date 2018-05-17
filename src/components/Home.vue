@@ -29,15 +29,10 @@
           </v-list-tile-content>
         </v-list-tile>
         <template v-for="(subject, i) in this.mySubjects">
-          <!-- <v-divider
-            v-else-if="item.divider"
-            :key="i"
-            class="my-3"
-          ></v-divider> -->
           <v-list-tile
             :key="i"
             ripple
-            @click=""
+            @click="toggleClass(subject.key)"
           >
             <v-list-tile-content>
               <v-list-tile-title class="grey--text">
@@ -65,18 +60,18 @@
     <v-toolbar color="amber" app absolute clipped-left>
       <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
       <span class="title ml-3 mr-5">Google&nbsp;<span class="text">Keep</span></span>
-      <!--<v-text-field-->
-        <!--solo-inverted-->
-        <!--flat-->
-        <!--label="Search"-->
-        <!--prepend-icon="search"-->
-      <!--&gt;</v-text-field>-->
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
       <v-spacer></v-spacer>
       <v-container v-if="addClassButton">
         <create-note-form></create-note-form>
+      </v-container>
+      <v-container v-else>
+        <form class="create-subject">
+          <h1 class="grey--text"> Welcome to Google Keep Student Edition </h1>
+          <pre>Head to your next stop through items in the drawer!</pre>
+        </form>
       </v-container>
       <v-container fluid>
         <notes></notes>
@@ -96,6 +91,7 @@
     data: () => ({
       drawer: null,
       addClassButton: false,
+      currentDisplaySubject: 0,
       items: [
         // { icon: 'lightbulb_outline', text: 'Notes' },
         // { icon: 'touch_app', text: 'Reminders' },
@@ -118,7 +114,8 @@
     },
     computed: {
         ...mapGetters({
-            mySubjects: 'getSubjects'
+            mySubjects: 'getSubjects',
+            myCurrentDisplaySubject: 'getCurrentDisplaySubject'
         })
     },
     components: {
@@ -127,11 +124,19 @@
       // UpdateModal
      },
     methods: {
+      ...mapMutations(['setCurrentDisplaySubject']),
       logout: function() {
         auth.signOut().then(() => {
           console.log(this.mySubjects.length);
           this.$router.replace('login')
         })
+      },
+      toggleClass: function(key) {
+        if (key != this.myCurrentDisplaySubject) {
+          this.setCurrentDisplaySubject(key);
+        } else {
+          this.setCurrentDisplaySubject(0);
+        }
       }
     }
   }
