@@ -21,11 +21,11 @@
         padding-top: 20px;
     }
 
-    form.create-subject button[type="submit"] {
+    form.create-subject button[type="edit"] {
         position: absolute;
         right: 18px;
         bottom: -18px;
-        background: #41b883;
+        background: #307fff;
         color: #fff;
         border: none;
         border-radius: 50%;
@@ -40,7 +40,7 @@
 
 <template>
 
-    <form class="create-subject" v-on:submit.prevent="createSubject()">
+    <form class="create-subject" v-on:submit.prevent="editSubject()">
         <v-layout row wrap>
           <v-flex xs11 sm5>
             <v-menu
@@ -94,15 +94,16 @@
       <input name="subject" type="notTimePicker" v-model="subject" placeholder="Subject Name" />
       <v-divider></v-divider>
       <input name="lecturer" type="notTimePicker" v-model="lecturer" placeholder="Lecturer" rows="3"></input>
-      <button type="submit">+</button>
+      <button type="edit">
+        <v-icon>edit</v-icon>
+      </button>
     </form>
 
 </template>
 
 <script>
     import { auth,db } from '../../firebase'
-    import { mapMutations } from 'vuex'
-    import Packery from 'packery'
+    import { mapMutations, mapGetters } from 'vuex'
     export default {
         data() {
           return {
@@ -114,31 +115,39 @@
               timeTo: null
           }
         },
+        computed: {
+            ...mapGetters({
+                mySubjects: 'getSubjects',
+                myCurrentDisplaySubject: 'getCurrentDisplaySubject'
+            })
+        },
         methods: {
           ...mapMutations(['replaceSubject']),
-          createSubject() {
-            const uid = auth.currentUser.uid;
-            if ((this.subject.trim() || this.lecturer.trim()) && this.timeFrom != null && this.timeTo != null) {
-              db.ref('subjects/' + uid).push({
-                subject: this.subject,
-                lecturer: this.lecturer,
-                timeFrom: this.timeFrom,
-                timeTo: this.timeTo,
-              }, (err) => {
-                if (err) {
-                  alert(err)
-                }
+          editSubject() {
+              const uid = auth.currentUser.uid;
+              if (this.subject === null || this.lecturer === null || this.timeFrom === null || this.timeTo === null) {
+                alert("Please fill in all required information!")
+              } else {
+                db.ref('subjects/' + uid).child(this.myCurrentDisplaySubject).update({
+                  subject: this.subject,
+                  lecturer: this.lecturer,
+                  timeFrom: this.timeFrom,
+                  timeTo: this.timeTo,
+                });
+                let classLocal = {
+                  subject: this.subject,
+                  lecturer: this.lecturer,
+                  timeFrom: this.timeFrom,
+                  timeTo: this.timeTo,
+                  key: this.myCurrentDisplaySubject
+                };
+                // this.replaceClassByKey(classLocal);
                 this.$notify({
                     group: 'info',
                     title: '[Success]',
-                    text: "Class was successfully added",
+                    text: "Class changes saved",
                     type: 'success'
                 });
-                this.subject = '';
-                this.lecturer = '';
-                this.timeFrom = null;
-                this.timeTo = null;
-              })
             }
           }
         }

@@ -37,7 +37,6 @@
       <div id="myKey" style="display: none;">{{subject.key}}</div>
     </v-flex>
     <v-flex xs11 sm5>
-      <v-btn block large color="primary" @click="editSubject" >Edit Class</v-btn>
       <v-btn block large color="error" @click="deleteSubject" >Remove Class</v-btn>
     </v-flex>
   </v-layout>
@@ -59,9 +58,6 @@
         const uid = auth.currentUser.uid;
         db.ref('subjects/' + uid).child(this.subject.key).remove();
         location.reload()
-      },
-      editSubject() {
-
       }
     }
   }

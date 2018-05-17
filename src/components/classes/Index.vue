@@ -77,6 +77,27 @@
           packery.layout()
         })
       })
+      db.ref('subjects/' + uid).on('child_changed', (snapshot) => {
+        var subjectExists = false;
+        let subject = { subject: snapshot.val().subject,
+                        lecturer: snapshot.val().lecturer,
+                        timeFrom: snapshot.val().timeFrom,
+                        timeTo: snapshot.val().timeTo,
+                        key: snapshot.key
+                      };
+        for (var index in this.mySubjects) {
+          if (this.mySubjects[index].key === subject.key) {
+            this.mySubjects[index].subject = subject.subject;
+            this.mySubjects[index].lecturer = subject.lecturer;
+            this.mySubjects[index].timeFromt = subject.timeFrom;
+            this.mySubjects[index].timeTo = subject.timeTo;
+          }
+        }
+        this.$nextTick(() => { // the new note hasn't been rendered yet, but in the nextTick, it will be rendered
+          packery.reloadItems()
+          packery.layout()
+        })
+      })
       db.ref('subjects/' + uid).on('child_removed', (snapshot) => {
         var index = 0;
 

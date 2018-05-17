@@ -14,9 +14,11 @@
         <v-flex xs6>
           <v-subheader>Classes</v-subheader>
         </v-flex>
+        <!--  Add class/note -->
         <v-list-tile
           avatar
           ripple
+          v-if="myCurrentDisplaySubject === null"
           @click="addClassButton=!addClassButton"
         >
           <v-list-tile-action>
@@ -28,6 +30,22 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile
+          avatar
+          ripple
+          v-else
+          @click="addClassButton=!addClassButton"
+        >
+          <v-list-tile-action>
+            <v-icon>add</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="text">
+              Add new note
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <!--  -->
         <template v-for="(subject, i) in this.mySubjects">
           <v-list-tile
             :key="i"
@@ -62,19 +80,26 @@
       <span class="title ml-3 mr-5">Google&nbsp;<span class="text">Keep</span></span>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-content>
-      <v-spacer></v-spacer>
-      <v-container v-if="addClassButton">
-        <create-note-form></create-note-form>
-      </v-container>
-      <v-container v-else>
+    <classes style="display: none;"></classes>
+    <v-content v-if="!addClassButton && myCurrentDisplaySubject === null">
+      <v-container>
         <form class="create-subject">
           <h1 class="grey--text"> Welcome to Google Keep Student Edition </h1>
           <pre>Head to your next stop through items in the drawer!</pre>
         </form>
       </v-container>
+    </v-content>
+    <v-content v-else-if="addClassButton && myCurrentDisplaySubject === null">
+      <v-container>
+        <create-class-form></create-class-form>
+      </v-container>
+    </v-content>
+    <v-content v-else="myCurrentDisplaySubject != null">
+      <v-container>
+        <update-class></update-class>
+      </v-container>
       <v-container fluid>
-        <notes></notes>
+        <classes></classes>
         <update-modal :note="this.$store.state.selectedNote ? this.$store.state.selectedNote : null"></update-modal>
       </v-container>
     </v-content>
@@ -83,15 +108,17 @@
 
 <script>
   import { auth } from '../firebase'
-  import Notes from './classes/Index'
-  import CreateNoteForm from './classes/Create'
+  import Classes from './classes/Index'
+  import UpdateClass from './classes/Update'
+  import Notes from './notes/Index'
+  import CreateClassForm from './classes/Create'
   import { mapMutations, mapGetters } from 'vuex'
-  // import UpdateModal from './notes/UpdateModal'
+  import UpdateModal from './notes/UpdateModal'
   export default {
     data: () => ({
       drawer: null,
       addClassButton: false,
-      currentDisplaySubject: 0,
+      currentDisplaySubject: null,
       items: [
         // { icon: 'lightbulb_outline', text: 'Notes' },
         // { icon: 'touch_app', text: 'Reminders' },
@@ -119,9 +146,11 @@
         })
     },
     components: {
+      Classes,
       Notes,
-      CreateNoteForm,
-      // UpdateModal
+      UpdateClass,
+      CreateClassForm,
+      UpdateModal
      },
     methods: {
       ...mapMutations(['setCurrentDisplaySubject']),
@@ -134,8 +163,9 @@
       toggleClass: function(key) {
         if (key != this.myCurrentDisplaySubject) {
           this.setCurrentDisplaySubject(key);
+          console.log(this.myCurrentDisplaySubject);
         } else {
-          this.setCurrentDisplaySubject(0);
+          this.setCurrentDisplaySubject(null);
         }
       }
     }
