@@ -26,7 +26,6 @@
     import Packery from 'packery'
     import Draggabilly from 'draggabilly'
     import Note from './Note'
-    import { db } from '../../firebase'
     import { mapMutations, mapGetters } from 'vuex'
     import ReminderFunc from './ReminderModal'
 
@@ -66,8 +65,8 @@
                 gutter: 16,
                 fitWidth: true
             });
-            db.ref('notes').orderByChild("orderKey").off();
-            db.ref('notes').orderByChild("orderKey").on('child_added', (snapshot) => {
+            this.$store.state.currentNoteRef.orderByChild("orderKey").off();
+            this.$store.state.currentNoteRef.orderByChild("orderKey").on('child_added', (snapshot) => {
                 let note = {title: snapshot.val().title,
                     content: snapshot.val().content,
                     reminderTime: snapshot.val().reminderTime,
@@ -94,7 +93,7 @@
                     packery.layout()
                 })
             });
-            db.ref('notes').orderByChild("orderKey").on('child_removed', () => {
+            this.$store.state.currentNoteRef.orderByChild("orderKey").on('child_removed', () => {
                 this.$nextTick(() => {
                     packery.reloadItems();
                     packery.layout()
@@ -112,7 +111,7 @@
                     newNotes.push(note);
                     let updates = {};
                     updates['notes/' + key + '/orderKey'] = currentIndex;
-                    db.ref().update(updates);
+                    this.$store.state.currentNoteRef.child(key).update({"orderKey": currentIndex});
                     currentIndex--;
                 }
                 this.setNotes(newNotes);

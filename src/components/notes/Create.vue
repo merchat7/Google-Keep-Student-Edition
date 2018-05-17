@@ -50,7 +50,6 @@
 </template>
 
 <script>
-    import { db } from '../../firebase'
     export default {
         data() {
             return {
@@ -61,7 +60,7 @@
         methods: {
             createNote() {
                 if (this.title.trim() || this.content.trim()) {
-                    db.ref('notes').push({
+                    this.$store.state.currentNoteRef.push({
                         title: this.title,
                         content: this.content,
                         orderKey: this.$store.state.currentOrderKey

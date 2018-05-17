@@ -12,7 +12,8 @@ const state = {
     /*---------------*/
     selectedNote: null,
     dragging: false,
-    class: null
+    class: null,
+    currentNoteRef: db.ref("notes") //to be changed
 };
 
 const getters = {
@@ -53,13 +54,16 @@ const mutations = {
     },
     setDragging(state, bool) {
         state.dragging = bool;
+    },
+    setCurrentNoteRef (state, ref) {
+        state.currentNoteRef = ref;
     }
 };
 
 function updateOrderKeyInDB (notes) {
     let currentIndex = notes.length-1;
     for (let i=0; i < notes.length; i++) {
-        db.ref('notes/').child(notes[i].key).update({orderKey: currentIndex});
+        state.currentNoteRef.child(notes[i].key).update({orderKey: currentIndex});
         currentIndex--;
     }
 }

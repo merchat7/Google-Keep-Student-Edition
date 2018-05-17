@@ -44,8 +44,6 @@
 </template>
 
 <script>
-    import { db } from '../../firebase'
-
     function hrsToMs(hours) {
         return hours * 60 * 60 * 1000;
     }
@@ -107,7 +105,7 @@
                             this.$store.state.notes[this.index]["reminderAlert"] = reminderAlert;
                         }
                         this.$store.state.notes[this.index]["reminderTime"] = reminderTime;
-                        db.ref('notes').child(this.note.key).update({"reminderTime": reminderTime});
+                        this.$store.state.currentNoteRef.child(this.note.key).update({"reminderTime": reminderTime});
                         this.$refs.form.reset();
                         this.$notify({
                             group: 'info',

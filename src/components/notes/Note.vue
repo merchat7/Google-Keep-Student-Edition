@@ -73,7 +73,6 @@
 </template>
 
 <script>
-    import { db } from '../../firebase'
     import { mapMutations } from 'vuex'
     import ReminderModal from './ReminderModal';
 
@@ -117,7 +116,7 @@
             remove () {
                 clearTimeout(this.$store.state.notes[this.index]["reminderAlert"]);
                 this.removeNote(this.index); // Must remove locally before removing remotely, or buggy behavior
-                db.ref('notes').child(this.note.key).remove();
+                this.$store.state.currentNoteRef.child(this.note.key).remove();
                 this.$notify({
                     group: 'info',
                     title: '[Success]',
@@ -129,7 +128,7 @@
                 this.$store.state.notes[this.index]["reminderTime"] = null; // Vue cannot detect if delete object[key] is done
                 clearTimeout(this.$store.state.notes[this.index]["reminderAlert"]);
                 this.$store.state.notes[this.index]["reminderAlert"] = null;
-                db.ref('notes/' + this.note.key).child("reminderTime").remove();
+                this.$store.state.currentNoteRef.child(this.note.key + "/reminderTime").remove();
                 this.$notify({
                     group: 'info',
                     title: '[Success]',
