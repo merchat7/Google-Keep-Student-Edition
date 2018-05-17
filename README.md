@@ -1,10 +1,10 @@
 https://trello.com/b/BhCKQCFB/google-keep-student-edition
 
-Latest working version (without class functionality):
+### Latest working version (without class functionality):
 
 https://github.com/merchat7/Google-Keep-Student-Edition/tree/9a4313355f0a5d4d647e6a44650873d384972c6b
 
-Latest working version (with class functionality)
+### Latest working version (with class functionality)
 
 https://github.com/merchat7/Google-Keep-Student-Edition/tree/99878b89801fe091c51b5ef138a64021a57b46cf
 
