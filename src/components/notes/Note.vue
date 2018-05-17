@@ -52,7 +52,7 @@
 <div class="note" @click=noteClicked>
     <h1>{{note.title}}</h1>
     <pre>{{note.content}}</pre>
-    <div id="myKey" style="display: none;">{{note.key}}</div>
+    <div id="myIndex" style="display: none;">{{this.index}}</div>
     <button class="delete" @click.stop="remove" type="button">
         <i class="fa fa-trash-o" aria-hidden="true"></i>
     </button>

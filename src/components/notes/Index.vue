@@ -106,14 +106,9 @@
                 let currentIndex = items.length-1;
                 let newNotes = [];
                 for (let i = 0; i < items.length; i++) {
-                    let title = items[i].getElementsByTagName("h1")[0].innerHTML;
-                    let content = items[i].getElementsByTagName("pre")[0].innerHTML;
-                    let key = items[i].children[2].innerHTML;
-                    let note = {
-                        title: title,
-                        content: content,
-                        key: key
-                    };
+                    let index = items[i].children[2].innerHTML;
+                    let note = this.$store.state.notes[index];
+                    let key = note.key;
                     newNotes.push(note);
                     let updates = {};
                     updates['notes/' + key + '/orderKey'] = currentIndex;
