@@ -6,7 +6,7 @@ https://github.com/merchat7/Google-Keep-Student-Edition/tree/9a4313355f0a5d4d647
 
 ### Latest working version (with class functionality)
 
-https://github.com/merchat7/Google-Keep-Student-Edition/tree/99878b89801fe091c51b5ef138a64021a57b46cf
+https://github.com/merchat7/Google-Keep-Student-Edition/tree/6d610907f4ab3a95edb7bac0ed10f71d55cfc7c4
 
 # gkeep-studente
 
