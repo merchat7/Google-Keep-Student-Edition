@@ -119,12 +119,12 @@
       </v-container>
       <v-container fluid>
         <classes></classes>
-        <update-modal :note="this.$store.state.selectedNote ? this.$store.state.selectedNote : null"></update-modal>
       </v-container>
       <v-container>
         <notes></notes>
       </v-container>
     </v-content>
+    <update-modal :note="this.$store.state.selectedNote ? this.$store.state.selectedNote : null"></update-modal>
   </v-app>
 </template>
 
@@ -164,7 +164,8 @@
     methods: {
       ...mapMutations([
         'setCurrentDisplaySubject',
-        'setCurrentNoteRef'
+        'setCurrentNoteRef',
+        'setSelectedNote'
       ]),
       logout: function() {
         auth.signOut().then(() => {
@@ -173,9 +174,10 @@
       },
       toggleClass: function(key) {
           const uid = auth.currentUser.uid;
+          this.setCurrentNoteRef(null);
+          this.setSelectedNote(null);
           if (key !== this.myCurrentDisplaySubject) {
               this.setCurrentDisplaySubject(null);
-              this.setCurrentNoteRef(null);
               // workaround to force mounted in component/notes/Index.vue to be called
               let sleep = function(time) {return new Promise((resolve) => setTimeout(resolve, time));};
               sleep(100).then(() => {
@@ -184,7 +186,6 @@
               });
           } else {
               this.setCurrentDisplaySubject(null);
-              this.setCurrentNoteRef(null);
           }
       }
     }
