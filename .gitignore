@@ -20,3 +20,10 @@ selenium-debug.log
 .firebaserc
 database.rules.json
 firebase.json
+
+# Cordova files
+www/
+cordova/platforms/
+cordova/plugins/
+cordova/node_modules/
+cordova/www/

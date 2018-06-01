@@ -10,6 +10,8 @@ const chalk = require('chalk')
 const webpack = require('webpack')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
+const fs = require('fs')
+const fixStaticPath = require('./fix-static-path');
 
 const spinner = ora('building for production...')
 spinner.start()
@@ -26,6 +28,8 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       chunks: false,
       chunkModules: false
     }) + '\n\n')
+
+    fixStaticPath();
 
     if (stats.hasErrors()) {
       console.log(chalk.red('  Build failed with errors.\n'))
