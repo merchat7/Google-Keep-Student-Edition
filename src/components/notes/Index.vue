@@ -50,7 +50,7 @@
                 let timeTillNotify = note.reminderTime - Date.now();
                 if (timeTillNotify >= 0 && timeTillNotify < 2147483647) {
                     return setTimeout(() => {
-                        this.$ons.notification.alert(this.note.title + " (" + ReminderFunc.methods.formatDate(new Date(Date.now())) + ")", {title: "Reminder"});
+                        this.$ons.notification.alert(note.title + " (" + ReminderFunc.methods.formatDate(new Date(Date.now())) + ")", {title: "Reminder"});
                     }, timeTillNotify);
                 }
             }
