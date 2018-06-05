@@ -92,7 +92,7 @@
                     </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
-            <v-toolbar color="amber" app absolute clipped-left>
+            <v-toolbar color="amber" app absolute clipped-left style="height:64px;">
                 <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
                 <span class="title ml-3 mr-5">Google&nbsp;<span class="text">Keep</span></span>
                 <v-spacer></v-spacer>
@@ -102,7 +102,7 @@
                 <v-container>
                     <form class="create-subject">
                         <h1 class="grey--text"> Welcome to Google Keep Student Edition </h1>
-                        <pre>Head to your next stop through items in the drawer!</pre>
+                        <p>Head to your next stop through items in the drawer!</p>
                     </form>
                 </v-container>
             </v-content>
@@ -168,11 +168,16 @@
         'setSelectedNote'
       ]),
       logout: function() {
-        auth.signOut().then(() => {
-          this.$router.replace('login')
-        })
+          this.$ons.notification.confirm("Are you sure you want to logout?", {callback: (answer) => {
+              if(answer) {
+                  auth.signOut().then(() => {
+                      this.$router.replace('login')
+                  })
+              }
+          }, title: ""});
       },
       toggleClass: function(key) {
+          this.drawer = !this.drawer;
           const uid = auth.currentUser.uid;
           this.setCurrentNoteRef(null);
           this.setSelectedNote(null);
@@ -202,4 +207,5 @@
   .text {
     font-weight: 400;
   }
+
 </style>

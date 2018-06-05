@@ -1,27 +1,28 @@
 <style>
 
-  .subject {
-    background: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px #ccc;
-    padding: 10px;
-    margin: 8px 0;
-    width: 100%;
-  }
+    .subject{
+        background: #fff;
+        border-radius: 2px;
+        box-shadow: 0 2px 5px #ccc;
+        padding: 10px;
+        margin: 8px 0;
+        width: 75.6%;
+        margin-right: 12.2%;
+        margin-left: 12.2%;
+    }
 
-  .subject h1 {
-    font-size: 1.1em;
-    margin-bottom: 6px;
-    word-wrap: break-word;
-  }
-
-  .subject pre {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-family: inherit;
-  }
+    .subject h1{
+        font-size: 1.1em;
+        margin-bottom: 6px;
+        word-wrap: break-word;
+    }
+    .subject pre {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: inherit;
+    }
 
 </style>
 

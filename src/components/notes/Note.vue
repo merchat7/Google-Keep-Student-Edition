@@ -5,7 +5,9 @@
         box-shadow: 0 2px 5px #ccc;
         padding: 10px;
         margin: 8px 0;
-        width: 240px; /* collumn size */
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
         transition: box-shadow .5s;
         cursor: default;
     }
@@ -21,30 +23,6 @@
         word-wrap: break-word;
         font-family: inherit;
     }
-    .note button{
-        background: none;
-        border: none;
-        font-size: 20px;
-        opacity: 0;
-        cursor: pointer;
-        transition: opacity .5s;
-        margin: 0 4px 0 0;
-    }
-    .note button.edit{
-        float: right;
-    }
-    .note button.delete{
-        float: left;
-    }
-    .note:hover, .note:focus{
-        box-shadow: 0 2px 10px #999;
-    }
-    .note:hover button, .note:focus button{
-        opacity: 0.6;
-    }
-    .note button:hover, .note button:focus{
-        opacity: 1;
-    }
 </style>
 
 <template>
@@ -53,20 +31,23 @@
     <h1>{{note.title}}</h1>
     <pre>{{note.content}}</pre>
     <div id="myIndex" style="display: none;">{{this.index}}</div>
-    <button class="delete" @click.stop="remove" type="button">
-        <i class="fa fa-trash-o" aria-hidden="true"></i>
-    </button>
-    <v-menu auto full-width open-on-hover>
-        <button class="edit" type="button" slot="activator">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-        </button>
-        <v-list>
-            <v-list-tile v-for="(item, index) in items" :key="index" @click=menuClicked(item.name)>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile>
-            <v-list-tile v-if="this.note.reminderTime" @click="removeReminder">Remove reminder</v-list-tile>
-        </v-list>
-    </v-menu>
+    <v-ons-action-sheet
+            :visible.sync="actionSheetVisible1"
+            cancelable
+            title="Note actions"
+    >
+        <v-ons-action-sheet-button v-for="(item, index) in items" :key="index" @click=menuClicked(item.name)>{{item.title}}</v-ons-action-sheet-button>
+        <v-ons-action-sheet-button @click="hideActionSheets">Cancel</v-ons-action-sheet-button>
+    </v-ons-action-sheet>
+    <v-ons-action-sheet
+            :visible.sync="actionSheetVisible2"
+            cancelable
+            title="Note actions"
+    >
+        <v-ons-action-sheet-button v-for="(item, index) in items" :key="index" @click=menuClicked(item.name)>{{item.title}}</v-ons-action-sheet-button>
+        <v-ons-action-sheet-button @click=menuClicked(removeName)>Remove reminder</v-ons-action-sheet-button>
+        <v-ons-action-sheet-button @click="hideActionSheets">Cancel</v-ons-action-sheet-button>
+    </v-ons-action-sheet>
     <ReminderModal :showModal="showReminder" :note="this.note" :index="this.index" @close="showReminder=false"></ReminderModal>
     <update-modal :showModal="showUpdate" :note="cloneNote" @close="showUpdate=false"></update-modal>
 </div>
@@ -80,13 +61,20 @@
 
     export default {
         data: () => ({
+            actionSheetVisible1: false,
+            actionSheetVisible2: false,
             showReminder: false,
             showUpdate: false,
             cloneNote: null,
+            removeName: 'removeReminder',
             items: [
                 {
                     title: 'Edit note',
                     name: 'Edit'
+                },
+                {
+                    title: 'Delete note',
+                    name: 'Delete'
                 },
                 {
                     title: 'Set reminder',
@@ -107,11 +95,21 @@
                 'setSelectedNote',
                 'removeNote']),
             noteClicked() {
-                if (!this.$store.state.dragging) this.edit();
+                if (!this.$store.state.dragging) {
+                    if (!this.note.reminderTime) this.actionSheetVisible1 = true;
+                    else this.actionSheetVisible2 = true;
+                }
             },
             menuClicked(name) {
+                this.hideActionSheets();
                 if (name === "Edit") this.edit();
+                else if (name === "Delete") this.remove();
                 else if (name === "setReminder") this.showReminder = true;
+                else if (name === "removeReminder") this.removeReminder();
+            },
+            hideActionSheets() {
+                this.actionSheetVisible1 = false;
+                this.actionSheetVisible2 = false;
             },
             edit() {
                 const clone = {...this.note}; // ensure only modified after pressing "save"

@@ -4,6 +4,7 @@
             :visible.sync="show"
             v-if="note"
             modifier="update"
+            animation="none"
     >
         <form class="edit-note" v-on:submit.prevent="update" v-on:click.stop="">
             <input name="title" v-model="note.title" placeholder="Title"/>
