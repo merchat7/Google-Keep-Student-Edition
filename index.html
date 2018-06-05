@@ -22,6 +22,29 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        // Wait for device API libraries to load
+        //
+        function onLoad() {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+
+        // device APIs are available
+        //
+        function onDeviceReady() {
+            // Register the event listener
+            document.addEventListener("backbutton", onBackKeyDown, false);
+        }
+
+        // Handle the back button
+        //
+        function onBackKeyDown(e) {
+            e.preventDefault(); //disable cordova's back button (use OnsenUI's instead)
+        }
+
+    </script>
 </head>
 <body>
 <div id="app"></div>

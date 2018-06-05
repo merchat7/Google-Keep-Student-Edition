@@ -68,12 +68,7 @@
                         if (err) {
                             alert(err)
                         }
-                        this.$notify({
-                            group: 'info',
-                            title: '[Success]',
-                            text: "Note was successfully added",
-                            type: 'success'
-                        });
+                        this.$ons.notification.toast('Note added', { timeout: 2000, animation:"fall"} );
                         this.title = '';
                         this.content = '';
                     })

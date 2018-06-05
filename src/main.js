@@ -3,10 +3,12 @@ import App from './App'
 import router from './router'
 import Vuetify from "vuetify"
 import store from './store/index.js'
-import Notifications from 'vue-notification'
+import 'onsenui/css/onsenui.css';
+import 'onsenui/css/onsen-css-components.css';
+import VueOnsen from 'vue-onsenui'; // This already imports 'onsenui'
 
 Vue.use(Vuetify);
-Vue.use(Notifications);
+Vue.use(VueOnsen);
 
 /* eslint-disable no-new */
 const app = new Vue({

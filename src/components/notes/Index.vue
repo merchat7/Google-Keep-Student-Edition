@@ -49,11 +49,9 @@
                 // TODO: Refactor, similiar function in ReminderModal
                 let timeTillNotify = note.reminderTime - Date.now();
                 if (timeTillNotify >= 0 && timeTillNotify < 2147483647) {
-                    return setTimeout(() => {this.$notify({
-                        group: 'reminder',
-                        title: note.title + " (" + ReminderFunc.methods.formatDate(new Date(Date.now())) + ")",
-                        text: note.content,
-                    });}, timeTillNotify);
+                    return setTimeout(() => {
+                        this.$ons.notification.alert(this.note.title + " (" + ReminderFunc.methods.formatDate(new Date(Date.now())) + ")", {title: "Reminder"});
+                    }, timeTillNotify);
                 }
             }
         },

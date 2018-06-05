@@ -129,12 +129,7 @@
                 if (err) {
                   alert(err)
                 }
-                this.$notify({
-                    group: 'info',
-                    title: '[Success]',
-                    text: "Class was successfully added",
-                    type: 'success'
-                });
+                this.$ons.notification.toast('Class added', { timeout: 2000, animation:"fall"} );
                 this.subject = '';
                 this.lecturer = '';
                 this.timeFrom = null;

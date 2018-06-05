@@ -143,12 +143,7 @@
                   key: this.myCurrentDisplaySubject
                 };
                 // this.replaceClassByKey(classLocal);
-                this.$notify({
-                    group: 'info',
-                    title: '[Success]',
-                    text: "Class changes saved",
-                    type: 'success'
-                });
+                this.$ons.notification.toast('Class changes saved', { timeout: 2000, animation:"fall"} );
             }
           }
         }
