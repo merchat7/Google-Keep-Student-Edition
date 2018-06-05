@@ -169,12 +169,13 @@
       ]),
       logout: function() {
           this.$ons.notification.confirm("Are you sure you want to logout?", {callback: (answer) => {
-              if(answer) {
-                  auth.signOut().then(() => {
-                      this.$router.replace('login')
-                  })
+                  if (answer) {
+                      auth.signOut().then(() => {
+                          this.$router.replace('login')
+                      })
+                  }
               }
-          }, title: ""});
+          });
       },
       toggleClass: function(key) {
           this.drawer = !this.drawer;
