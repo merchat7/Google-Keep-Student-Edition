@@ -3,6 +3,7 @@
             cancelable
             :visible.sync="show"
             modifier="reminder"
+            @keyup.enter="submit"
     >
         <div class="alert-dialog-title">Set Reminder<br></br></div>
         <div v-if="this.note.reminderTime" v-bind:style="[(this.note.reminderTime - Date.now() < 0) ? {background: 'lightgrey'} : {background: 'lightgreen'}]">

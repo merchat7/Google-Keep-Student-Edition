@@ -47,6 +47,11 @@
                     key: this.note.key,
                     index: this.note.index};
                 this.replaceNoteByKey(noteLocal);
+                let sleep = function(time) {return new Promise((resolve) => setTimeout(resolve, time));};
+                sleep(100).then(() => {
+                    this.$store.state.packeryRef.reloadItems();
+                    this.$store.state.packeryRef.layout();
+                });
                 this.$ons.notification.toast('Note saved', { timeout: 2000, animation:"fall"} );
             },
         }

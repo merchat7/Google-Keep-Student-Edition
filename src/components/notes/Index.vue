@@ -44,7 +44,8 @@
                 'clearNotes',
                 'setNotes',
                 'incrementLastCheckedIndex',
-                'setDragging']),
+                'setDragging',
+                'setPackeryRef']),
             setReminderNotification (note) {
                 // TODO: Refactor, similiar function in ReminderModal
                 let timeTillNotify = note.reminderTime - Date.now();
@@ -63,6 +64,7 @@
                 gutter: 16,
                 fitWidth: true
             });
+            this.setPackeryRef(packery);
             this.$store.state.currentNoteRef.orderByChild("orderKey").off();
             this.$store.state.currentNoteRef.orderByChild("orderKey").on('child_added', (snapshot) => {
                 let note = {title: snapshot.val().title,

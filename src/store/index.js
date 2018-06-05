@@ -16,7 +16,8 @@ const state = {
     subjects: [],
     currentDisplaySubject: null,
     /*---------------*/
-    currentNoteRef: db.ref("notes") //to be changed
+    currentNoteRef: db.ref("notes"), //to be changed
+    packeryRef: null
 };
 
 const getters = {
@@ -71,6 +72,9 @@ const mutations = {
     },
     setCurrentNoteRef (state, ref) {
         state.currentNoteRef = ref;
+    },
+    setPackeryRef (state, ref) {
+        state.packeryRef = ref;
     }
 };
 
