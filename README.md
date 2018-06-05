@@ -1,3 +1,25 @@
+## Using Cordova
+``` bash
+# Build required files for Cordova
+npm install
+npm run build
+
+# Move to cordova project folder
+cd cordova
+
+# Register platform for Cordova
+cordova platform add android@latest
+
+# Build Cordova
+npm install (cordova contains a different package.json)
+cordova build android
+
+# Run on emulator/phone
+Setup Android Studio
+Import android project from cordova/platforms/android
+*Do not update Gradle when prompted
+```
+
 https://trello.com/b/BhCKQCFB/google-keep-student-edition
 
 ### Latest working version (without class functionality):
