@@ -60,7 +60,7 @@
 
 <style>
     .dialog--update {
-        height: 60vh;
+        height: 90vh;
     }
     form.edit-note{
         height: 100%;
@@ -71,6 +71,7 @@
         box-shadow: 0 1px 50px #555;
     }
     form.edit-note input{
+        min-height: 20px;
         height: 10%;
         width: 100%;
         max-width: 100%;
