@@ -1,23 +1,21 @@
 <template>
-  <div class="login">
-      <div @keyup.enter="signIn" id="login-box">
-        <div class="left">
-          <h1>Log In</h1>
+  <v-ons-page>
+    <div class="login">
+        <div @keyup.enter="signIn" id="login-box">
+          <div class="left">
+            <h1>Log In</h1>
 
-          <input type="text" v-model="email" name="email" placeholder="E-mail" />
-          <input type="password" v-model="password" name="password" placeholder="Password" />
+            <input type="text" v-model="email" name="email" placeholder="E-mail" />
+            <input type="password" v-model="password" name="password" placeholder="Password" />
 
-          <button @click="signIn" type="submit">Log In</button>
-          <p>Don't have an account? <router-link to="/sign-up">Sign up</router-link></p>
+            <button @click="signIn" type="submit">Log In</button>
+            <button v-on:click="signInFacebook" class="social-signin facebook">Log in with facebook</button>
+            <button v-on:click="signInGoogle" class="social-signin google">Log in with Google+</button>
+            <p>Don't have an account? <router-link to="/sign-up">Sign up</router-link></p>
+          </div>
         </div>
-
-        <div class="right">
-          <button v-on:click="signInFacebook" class="social-signin facebook">Log in with facebook</button>
-          <button v-on:click="signInGoogle" class="social-signin google">Log in with Google+</button>
-        </div>
-        <div class="or">OR</div>
-      </div>
-  </div>
+    </div>
+  </v-ons-page>
 </template>
 
 <script>
@@ -127,23 +125,20 @@
     }
 
     #login-box {
-      position: fixed;
-      margin: 5% auto;
-      width: 600px;
-      height: 330px;
-      top: 50%;
-      left: 50%;
-      margin-top: -150px;
-      margin-left: -300px;
-      background: #FFF;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      margin: auto;
       border-radius: 2px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     .left {
-      position: absolute;
+      position: relative;
       top: 0;
       left: 0;
+      margin: auto;
       box-sizing: border-box;
       padding: 40px;
       width: 300px;
@@ -152,7 +147,7 @@
 
     h1 {
       margin: 0 0 20px 0;
-      font-weight: 300;
+      font-weight: lighter;
       font-size: 28px;
     }
 
@@ -223,13 +218,12 @@
 
     .right {
       position: absolute;
-      top: 60px;
+      top: 0px;
       right: 0;
       box-sizing: border-box;
       padding: 40px;
       width: 300px;
       height: 400px;
-      background: url('https://goo.gl/YbktSj');
       background-size: cover;
       background-position: center;
       border-radius: 0 2px 2px 0;

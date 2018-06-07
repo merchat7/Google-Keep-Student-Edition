@@ -1,18 +1,20 @@
 <template>
-  <div class="sign-up">
-      <div id="login-box">
-        <div class="center">
-          <h1>Sign up</h1>
+  <v-ons-page>
+    <div class="sign-up">
+        <div id="login-box">
+          <div class="center">
+            <h1>Sign up</h1>
 
-          <input type="text" v-model="email" name="email" placeholder="E-mail" />
-          <input type="password" v-model="password" name="password" placeholder="Password" />
-          <input type="password" v-model="password2" name="password2" placeholder="Retype password" />
+            <input type="text" v-model="email" name="email" placeholder="E-mail" />
+            <input type="password" v-model="password" name="password" placeholder="Password" />
+            <input type="password" v-model="password2" name="password2" placeholder="Retype password" />
 
-          <button v-on:click="signUp" type="submit">Confirm</button>
-          <p>Or go back to <router-link to="/login">login</router-link></p>
+            <button v-on:click="signUp" type="submit">Confirm</button>
+            <p>Or go back to <router-link to="/login">login</router-link></p>
+          </div>
         </div>
-      </div>
-  </div>
+    </div>
+  </v-ons-page>
 </template>
 
 <script>
@@ -61,26 +63,23 @@
     }
 
     #login-box {
-      position: fixed;
-      margin: 5% auto;
-      width: 600px;
-      height: 350px;
-      top: 50%;
-      left: 50%;
-      margin-top: -150px;
-      margin-left: -300px;
-      background: #FFF;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      margin: auto;
       border-radius: 2px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
 
     .center {
-      position: absolute;
+      position: relative;
       top: 0;
       left: 0;
+      margin: auto;
       box-sizing: border-box;
       padding: 40px;
-      width: 600px;
+      width: 300px;
       height: 400px;
     }
 
@@ -96,7 +95,7 @@
       box-sizing: border-box;
       margin-bottom: 20px;
       padding: 4px;
-      width: 500px;
+      width: 220px;
       height: 32px;
       border: none;
       border-bottom: 1px solid #AAA;
