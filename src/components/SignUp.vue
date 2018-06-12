@@ -85,7 +85,7 @@
 
     h1 {
       margin: 0 0 20px 0;
-      font-weight: 300;
+      font-weight: lighter;
       font-size: 28px;
     }
 
